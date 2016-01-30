@@ -1,0 +1,19 @@
+.site-logo{
+  float: left;
+  margin: 1em;
+  .site-title{
+    font-size: 1em;
+    color: #000;
+    font-weight: 500;
+  }
+  p{
+    font-size: .8em;
+    margin-top: .25em;
+    color: #aaa;
+    clear: both;
+  }
+}
+
+.site-nav{
+  float: right;
+}
