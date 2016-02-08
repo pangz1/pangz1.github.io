@@ -61,6 +61,12 @@
     margin-left: 0;
 }
 
+.social-media-list{
+  li{
+    padding-top: 1em;
+  }
+}
+
 .footer-col-wrapper {
     font-size: 15px;
     color: $grey-color;
@@ -131,6 +137,7 @@
         margin-bottom: $spacing-unit;
         .read-more-link{
           color: #8cc152;
+          font-size: 12px;
           &:hover, &:active{
             color: #f2337d;
           }
@@ -145,7 +152,7 @@
 
 .post-link {
     display: block;
-    font-size: 24px;
+    font-size: 30px;
 }
 
 
