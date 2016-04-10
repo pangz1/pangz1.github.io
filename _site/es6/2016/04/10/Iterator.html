@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>理解Interator</title>
+  <meta name="description" content="Javascript 原有的表示 “集合” 的数据结构，主要是数组(Array)和对象(Object)，加上es6中加入的 Map 和 Set，一共是4中数据集合。Iterator(遍历器)是一种接口，为各种不同的数据集合提供统一的访问机制，任何数据结构，只要部署Iterator接口，就可以进行遍历操作。其功能有3个：">
+
+  <link rel="stylesheet" href="/css/main.css">
+  <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,600,700,800,700italic,600italic,300' rel='stylesheet' type='text/css'>
+  <link rel="canonical" href="http://yourdomain.com/es6/2016/04/10/Iterator.html">
+  <link rel="alternate" type="application/rss+xml" title="胖子" href="http://yourdomain.com/feed.xml">
+</head>
+
+
+  <body>
+
+    <header class="site-header">
+  <hgroup>
+    <a href="/"><h1 class="site-title">胖子</h1></a>
+    <h2>技术改变生活</h2>
+  </hgroup>
+</header>
+
+    <nav>
+  <a href="/">HOME</a>
+  <a href="./blog/">BLOG</a>
+  <a href="./about/">ABOUT ME</a>
+  <a href="/feed.xml" class="rss">RSS</a>
+</nav>
+    
+    <div class="page-content">
+      <div class="wrapper">
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <p class="post-meta"><time datetime="2016-04-10T20:46:16+08:00" itemprop="datePublished">Apr 10, 2016</time></p>
+    <h1 class="post-title" itemprop="name headline">理解Interator</h1>
+  </header>
+
+  <div class="post-content" itemprop="articleBody">
+    <p>Javascript 原有的表示 “集合” 的数据结构，主要是数组(Array)和对象(Object)，加上es6中加入的 Map 和 Set，一共是4中数据集合。<br />
+Iterator(遍历器)是一种接口，为各种不同的数据集合提供统一的访问机制，任何数据结构，只要部署Iterator接口，就可以进行遍历操作。其功能有3个：</p>
+
+<ul>
+  <li>为各种数据结构提供统一的，简便的访问接口</li>
+  <li>使得数据结构的内部成员能够按某种次序排列</li>
+  <li>服务 for … of 循环</li>
+</ul>
+
+<p>Iterator的遍历过程如下：</p>
+
+<ol>
+  <li>创建一个指针对象，指向当前数据结构的起始位置，Iterator 对象本质上是一个指针对象</li>
+  <li>第一次调用指针对象的 next 方法，指针指向数据结构的第一个成员</li>
+  <li>第二次调用指针对象的 next 方法，指针指向数据结构的第二个成员</li>
+  <li>…</li>
+  <li>一直调用该指针对象的 next 方法，直到数据结构的结束位置</li>
+</ol>
+
+<p>每次调用 next 都会返回数据结构当前成员的信息：一个包含 value 和 done 两个属性的对象，value 属性是当前成员的值，done 属性是一个布尔值，表示遍历是否结束</p>
+
+<p>模拟一个遍历器生成函数</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>function makeIterator(array){
+  let nextIndex = 0;
+  return {
+    next () {
+      return nextIndex &lt; array.length ?
+        {value: array[nextIndex], done: false} :
+        {value: array[nextIndex], done: true};
+    }
+  }
+}
+</code></pre>
+</div>
+
+<p>Iterator 并不会改变数据结构的行为，它只是把接口的规则添加到了数据结构上，在es6 中，数组原生具有 Iterator 接口，它可以被 for … of 循环遍历，对象则没有。原因在于数组原生部署了 <code class="highlighter-rouge">Symbol.iterator</code> 属性。对象没有部署该属性。</p>
+
+<p>凡是部署了<code class="highlighter-rouge">Symbol.iterator</code> 属性的数据结构，就称为部署了 Iterator 接口，调用这个接口，就会翻一个遍历器对象。</p>
+
+<p>Iterator接口的目的，就是为所有数据结构提供一种统一的访问机制，即 <code class="highlighter-rouge">for ... of</code> 循环。当使用<code class="highlighter-rouge">for ... of</code>循环遍历某种数据结构时，该循环会自动寻找 Iterator 接口。</p>
+
+<p>默认的 Iterator 接口部署在数据结构的 <code class="highlighter-rouge">Symbol.iterator</code> 属性上，调用 <code class="highlighter-rouge">Symbol.iterator</code> 方法，就会得到当前数据结构默认的遍历器生成函数。</p>
+
+<p>es6中，有3种数据结构原生具备 Iterator 接口：<em>数组</em>，<em>类数组对象</em>，<em>Set和Map结构</em></p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>let arr = ['a', 'b', 'c'];
+let iter = arr[Symbol.iterator](); // 原生具备Symbol.iterator接口(属性)，调用该方法，返回遍历器生成函数
+
+iter.next()   // {value: 'a', done: false}
+iter.next()   // {value: 'b', done: false}
+iter.next()   // {value: 'c', done: false}
+iter.next()   // {value: undefined, done: true}
+</code></pre>
+</div>
+
+<p>上面3类数据结构不用自己写遍历器生成函数，<code class="highlighter-rouge">for ... of</code> 循环会自动遍历他们，其他数据结构的 Iterator 接口必须手动在 Symbol.iterator 属性上部署， 才会被 <code class="highlighter-rouge">for ... of</code>循环遍历。对象之所以没有部署 Iterator 接口是因为对象是一个无序结构，要先遍历哪个属性，后遍历哪个属性需要开发者自己指定。</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>class RangeIterator(){
+  constructor(start, stop){
+    this.value = start;
+    this.stop = stop;
+  }
+  
+  [Symbol.iterator] () {
+    return this;
+  }
+  
+  next () {
+    var value = this.value;
+    if (value &lt; this.stop) {
+      this.value ++;
+      return {value: value, done: false}
+    } else {
+      return {value: undefined, done: true}
+    }
+  }
+}
+
+function range (start, stop) {
+  return new RangeIterator(start, stop);
+}
+
+for (var value of range(0, 3)){
+  console.log(value);
+}
+</code></pre>
+</div>
+
+<p>上面的代码实现部署一个 Iterator 接口，Symbol.iterator 对应一个函数，调用后返回当前对象的遍历器对象。</p>
+
+
+  </div>
+
+</article>
+
+      </div>
+    </div>
+
+    <footer class="site-footer">
+  
+  <div class="wrapper">
+    <a href="https://github.com/pangz1" target="_blank"><span class="icon icon--github"><svg viewBox="0 0 16 16"><path fill="#828282" d="M7.999,0.431c-4.285,0-7.76,3.474-7.76,7.761 c0,3.428,2.223,6.337,5.307,7.363c0.388,0.071,0.53-0.168,0.53-0.374c0-0.184-0.007-0.672-0.01-1.32 c-2.159,0.469-2.614-1.04-2.614-1.04c-0.353-0.896-0.862-1.135-0.862-1.135c-0.705-0.481,0.053-0.472,0.053-0.472 c0.779,0.055,1.189,0.8,1.189,0.8c0.692,1.186,1.816,0.843,2.258,0.645c0.071-0.502,0.271-0.843,0.493-1.037 C4.86,11.425,3.049,10.76,3.049,7.786c0-0.847,0.302-1.54,0.799-2.082C3.768,5.507,3.501,4.718,3.924,3.65 c0,0,0.652-0.209,2.134,0.796C6.677,4.273,7.34,4.187,8,4.184c0.659,0.003,1.323,0.089,1.943,0.261 c1.482-1.004,2.132-0.796,2.132-0.796c0.423,1.068,0.157,1.857,0.077,2.054c0.497,0.542,0.798,1.235,0.798,2.082 c0,2.981-1.814,3.637-3.543,3.829c0.279,0.24,0.527,0.713,0.527,1.437c0,1.037-0.01,1.874-0.01,2.129 c0,0.208,0.14,0.449,0.534,0.373c3.081-1.028,5.302-3.935,5.302-7.362C15.76,3.906,12.285,0.431,7.999,0.431z"/></svg>
+</span><span class="username">pangz1</span></a>
+
+  </div>
+
+</footer>
+
+
+  </body>
+
+</html>

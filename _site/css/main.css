@@ -145,6 +145,9 @@ body > * {
     color: #2793C7; }
     .post-content a:hover {
       color: #f2337d; }
+  .post-content em {
+    font-style: normal;
+    color: green; }
   .post-content p {
     margin-bottom: 1em; }
   .post-content h3 {
