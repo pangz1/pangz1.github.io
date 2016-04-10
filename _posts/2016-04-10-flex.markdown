@@ -40,9 +40,9 @@ flex items 沿着主轴（从main-start到main-end）或者交叉轴（从cross-
 
 ![](/assets/images/flex/810695-20150919145700398-861125878.png)
 
-    .container{
-			flex-wrap: nowrap | wrap | wrap-reverse;
-    }
+	.container{
+		flex-wrap: nowrap | wrap | wrap-reverse;
+	}
     
 * nowrap(default): 单行从左到右排列
 * wrap ： 多行从左到右排列
@@ -56,17 +56,17 @@ flex items 沿着主轴（从main-start到main-end）或者交叉轴（从cross-
 
 flex-flow 是 flex-direction 和 flex-wrap 的复合形式，默认值是 `row nowrap`。
     
-    .container{
-			flex-flow: <flex-direction> <flex-wrap>;
-    }
+	.container{
+		flex-flow: <flex-direction> <flex-wrap>;
+	}
     
 `justify-content`
 
 `justify-content`定义了 flex-items 在主轴上的对齐方式。
 
-    .container{
-			justify-content: flex-start | flex-end | center | space-between | sapce-around;
-    }
+	.container{
+		justify-content: flex-start | flex-end | center | space-between | sapce-around;
+	}
 
 ![](/assets/images/flex/810695-20150920135731617-616558862.jpg)
 
@@ -82,7 +82,7 @@ flex-flow 是 flex-direction 和 flex-wrap 的复合形式，默认值是 `row n
 
 该属性定义 flex-items 在交叉轴上的对齐方式
 
-![](	/assets/images/flex/810695-20150920135959836-2135609919.png)
+![](/assets/images/flex/810695-20150920135959836-2135609919.png)
 
 `align-content`
 
@@ -104,25 +104,25 @@ flex-flow 是 flex-direction 和 flex-wrap 的复合形式，默认值是 `row n
 
 定义 flex-item 的扩展比例，默认值为 0，如果没有定义该属性，是不会其分配空间的，搞一段代码便于理解：
 		
-		<div class="container">
-				<div class="item item1">1</div>
-				<div class="item item2">2</div>
-				<div class="item item3">3</div>
-				<div class="item item4">4</div>
-		</div>
-		
-		.container{ display: flex; }
-		.item1{ flex-grow: 1; }
+	<div class="container">
+		<div class="item item1">1</div>
+		<div class="item item2">2</div>
+		<div class="item item3">3</div>
+		<div class="item item4">4</div>
+	</div>
+	
+	.container{ display: flex; }
+	.item1{ flex-grow: 1; }
 		
 我们只给item1加了 `flex-grow ： 1；` 其他item的该属性都是默认值0，不会分配剩余空间，所有的剩余空间都会分配给 item1，结果如下：
 
 ![](/assets/images/flex/810695-20150920151819695-1942916452.png)
 
-		.item{ margin-right: 10px;}
-		.item1{ flex-grow: 1;}
-		.item2{ flex-grow: 2;}
-		.item3{ flex-grow: 3;}
-		.item4{ flex-grow: 4; margin-right: 0;}
+	.item{ margin-right: 10px;}
+	.item1{ flex-grow: 1;}
+	.item2{ flex-grow: 2;}
+	.item3{ flex-grow: 3;}
+	.item4{ flex-grow: 4; margin-right: 0;}
 		
 现在富余空间被分成了（1+2+3+4）10份，总宽度是400，
 富余空间宽度为 400 - 10*3 – 20*4 = 290px，每份是29px。
@@ -188,9 +188,9 @@ scale ： 每个 item 的 flex-shrink 的值占所有 item 的 flex-shrink 的�
 垂直水平居中[(点击查看)](http://codepen.io/walle2/pen/Bozoaq)
 
 	.container{
-			display: flex;
-			align-items: center;   /* 设置交叉轴上的对齐方式 */
-			justify-content: center;  /* 设置主轴上的对齐方式 */
+		display: flex;
+		align-items: center;   /* 设置交叉轴上的对齐方式 */
+		justify-content: center;  /* 设置主轴上的对齐方式 */
 	}
 
 圣杯布局[(点击查看)](http://codepen.io/walle2/pen/KdMdpO)
@@ -198,95 +198,95 @@ scale ： 每个 item 的 flex-shrink 的值占所有 item 的 flex-shrink 的�
 	<!-- html -->
 	<header></header>
 	<div class="container">
-			<section class="main"></section>
-			<aside></aside>
+		<section class="main"></section>
+		<aside></aside>
 	</div>
 	<footer></footer>
 	
 	.container{
-			display: flex;
-			align-items: stretch;
+		display: flex;
+		align-items: stretch;
 	}
 
 	section{
-			-webkit-flex: 2 1 500px;
-			-webkit-box-flex: 2;
-			flex: 5 1 500px;
-			margin-right: 1%;
+		-webkit-flex: 2 1 500px;
+		-webkit-box-flex: 2;
+		flex: 5 1 500px;
+		margin-right: 1%;
 	}
 	aside{
-			-webkit-flex: 1 2 250px;
-			-webkit-box-flex: 1;
-			flex: 1 2 250px;
+		-webkit-flex: 1 2 250px;
+		-webkit-box-flex: 1;
+		flex: 1 2 250px;
 	}
 	
 固定的页脚[(点击查看)](http://codepen.io/walle2/pen/Vvjvay),不用flex实现的戳[这里](http://cbracco.me/css-sticky-footer-effect/)
 
 	<body>
-			<header><!-- header stuff --></header>
-			<section class="content"><!-- main content --></section>
-			<footer><!-- footer stuff --></footer>
+		<header><!-- header stuff --></header>
+		<section class="content"><!-- main content --></section>
+		<footer><!-- footer stuff --></footer>
 	</body>
 	
 	html{
-    	height: 100%;
+		height: 100%;
 	}
 	body{
-			display: flex;
-			min-height: 100%;
-			flex-direction: column;
+		display: flex;
+		min-height: 100%;
+		flex-direction: column;
 	}
 	section.content{
-			flex-grow: 1;
+		flex-grow: 1;
 	}
 	
 ### 兼容老浏览器
 flex发展至今总共经历了三个版本，分别是  [old, tweener, new](https://css-tricks.com/old-flexbox-and-new-flexbox/)， 为了更好实现兼容，最好的方法是，用最新的语法写，然后通过 Autoprefixer 来处理浏览器前缀问题，或者也可以用 sass 封装一个 mixin。
 
 	.new{
-			display: flex;
+		display: flex;
 	}
 	.tweener{
-			display: flexbox;
+		display: flexbox;
 	}
 	.old{
-			display: box;
+		display: box;
 	}
 	
-	![](/Users/pangzi/pangz1.github.io/assets/images/flex/810695-20150920140141367-2071703170.png)
+![](/Users/pangzi/pangz1.github.io/assets/images/flex/810695-20150920140141367-2071703170.png)
 
-		@mixin flexbox() {
-				display: -webkit-box;
-				display: -moz-box;
-				display: -ms-flexbox;
-				display: -webkit-flex;
-				display: flex;
-		}
+	@mixin flexbox() {
+		display: -webkit-box;
+		display: -moz-box;
+		display: -ms-flexbox;
+		display: -webkit-flex;
+		display: flex;
+	}
 
-		@mixin flex($values) {
-				-webkit-box-flex: $values;
-				-moz-box-flex:  $values;
-				-webkit-flex:  $values;
-				-ms-flex:  $values;
-				flex:  $values;
-		}
+	@mixin flex($values) {
+		-webkit-box-flex: $values;
+		-moz-box-flex:  $values;
+		-webkit-flex:  $values;
+		-ms-flex:  $values;
+		flex:  $values;
+	}
 
-		@mixin order($val) {
-				-webkit-box-ordinal-group: $val;  
-				-moz-box-ordinal-group: $val;     
-				-ms-flex-order: $val;     
-				-webkit-order: $val;  
-				order: $val;
-		}
+	@mixin order($val) {
+		-webkit-box-ordinal-group: $val;  
+		-moz-box-ordinal-group: $val;     
+		-ms-flex-order: $val;     
+		-webkit-order: $val;  
+		order: $val;
+	}
 
-		.wrapper {
-				@include flexbox();
-		}
+	.wrapper {
+		@include flexbox();
+	}
 
-		.item {
-				@include flex(1 200px);
-				@include order(2);
-		}
+	.item {
+		@include flex(1 200px);
+		@include order(2);
+	}
 	
 
 ### 参考资料

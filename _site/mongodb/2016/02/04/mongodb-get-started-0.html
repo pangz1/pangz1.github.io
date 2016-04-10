@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>mongodb 入门 -- shell 基本操作</title>
+  <meta name="description" content="基本操作">
+
+  <link rel="stylesheet" href="/css/main.css">
+  <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,600,700,800,700italic,600italic,300' rel='stylesheet' type='text/css'>
+  <link rel="canonical" href="http://yourdomain.com/mongodb/2016/02/04/mongodb-get-started-0.html">
+  <link rel="alternate" type="application/rss+xml" title="黄威威个人博客" href="http://yourdomain.com/feed.xml">
+</head>
+
+
+  <body>
+
+    <header class="site-header">
+
+  <div class="wrapper">
+
+    <div class="site-logo">
+      <a href="/"><h1 class="site-title">黄威威个人博客</h1></a><br>
+      <p>爱代码，爱生活</p>
+    </div>
+
+    <nav class="site-nav">
+      <a href="/">HOME</a>
+      <a href="./blog/">BLOG</a>
+      <a href="./about/">ABOUT ME</a>
+    </nav>
+
+  </div>
+
+</header>
+
+
+    <div class="page-content">
+      <div class="wrapper">
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title" itemprop="name headline">mongodb 入门 -- shell 基本操作</h1>
+    <p class="post-meta"><time datetime="2016-02-04T08:00:16+08:00" itemprop="datePublished">Feb 4, 2016</time></p>
+  </header>
+
+  <div class="post-content" itemprop="articleBody">
+    <h2 id="section">基本操作</h2>
+
+<h3 id="section-1">创建</h3>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>&gt; item = {
+    "name": "MoYu xxxx",
+    "brand": "MoYu",
+    "color": "white",
+    "price": "$32.00"
+}
+</code></pre>
+</div>
+
+<p>编辑一个文档，使用 insert 方法将其插入到 products 集合中去</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>db.products.insert(item);
+</code></pre>
+</div>
+
+<p>看是是否插入成功</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>&gt; db.products.findOne()
+{
+    "_id": ObjectId("56b36b5de80119c7791914c6"),
+    "name": "MoYu xxxx",
+    "brand": "MoYu",
+    "color": "white",
+    "price": "$32.00"
+}
+</code></pre>
+</div>
+
+<h3 id="section-2">批量插入</h3>
+
+<p>批量插入使用 batchInsert, 用法与 insert 类似，接受一个文档数组作为参数</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>&gt; db.foo.batchInsert([{"id": 1}, {"id":2}, {"id": 3}])
+</code></pre>
+</div>
+
+<p>一次插入多个文档效率会高很多</p>
+
+<h3 id="section-3">读取</h3>
+
+<p>find 和 findOne 方法用于查询集合中的文档，findOne 只查看一条，find 一次最多查看20条</p>
+
+<p>可以传入一个查询文档作为限制条件</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>&gt; db.products.find({"brand": "MoYu"})
+</code></pre>
+</div>
+
+<p>这条命令会查询出所有 魔域品牌的魔方</p>
+
+<h3 id="section-4">更新</h3>
+
+<p>update 最少接受两个参数，待更新的文档，新的文档</p>
+
+<p>update 常规更新是用新的文档文档完全替换掉旧的文档，适用于大规模迁移的情况</p>
+
+<p>另一种是使用修改器对文档进行局部更新</p>
+
+<h4 id="set-">$set 修改器</h4>
+
+<p>$set 用来指定一个字段的值，如果这个字段不存在就创建它。</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>&gt; db.products.findOne()
+{
+    "_id" : ObjectId("56b43587e48157aa97a9ed79"),
+    "id" : "1",
+    "brand" : "ShengShou",
+    "itemNo" : "7080A-1",
+    "itemName" : "ShengShou 2x2x2 with matte stick",
+    "color" : "black,white"
+}
+</code></pre>
+</div>
+
+<p>下面为其添加一个包装信息</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>&gt; db.products.update({"id": "1"}, {"$set": {"package": "color box"}})
+</code></pre>
+</div>
+
+<p>之后文档就有 package 信息了</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>&gt; db.products.findOne()
+{
+    "_id" : ObjectId("56b43587e48157aa97a9ed79"),
+    "id" : "1",
+    "brand" : "ShengShou",
+    "itemNo" : "7080A-1",
+    "itemName" : "ShengShou 2x2x2 with matte stick",
+    "color" : "black,white",
+    "package": "color box"
+}
+</code></pre>
+</div>
+
+<p>修改 package 信息</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>&gt; db.products.update({"id": "1"}, {"$set": {"package": "plastic box"}})
+</code></pre>
+</div>
+
+<p>删除 package 信息</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>&gt; db.product.update({"id": "1"}, {"$unset": {"package": 1}})
+</code></pre>
+</div>
+
+<h4 id="inc-">$inc 修改器</h4>
+
+<p>$inc 用来增加已有键的值，如果该键不存在就创建一个</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>&gt; db.products.update({"id": 1}, {"$inc": {"storage": 50}})
+</code></pre>
+</div>
+
+<p>为产品添加一个库存信息，下次库存增加100个</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>&gt; db.products.update({"id": 1}, {"$inc": {"storage": 100}})
+
+&gt; db.products.getOne()
+{
+    "_id" : ObjectId("56b43587e48157aa97a9ed79"),
+    "id" : "1",
+    "brand" : "ShengShou",
+    "itemNo" : "7080A-1",
+    "itemName" : "ShengShou 2x2x2 with matte stick",
+    "color" : "black,white",
+    "package": "color box",
+    "storage": 150
+}
+</code></pre>
+</div>
+
+<p>$inc 修改的键的值必须为数值类型，否则会出现错误</p>
+
+<h3 id="section-5">数组修改器</h3>
+
+<p>$push 会向已有的数组末尾添加一个元素，要是没有就创建一个新的数组</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>&gt; db.foo.update({"id": 1}, {"$push": {"contacts": {"email": "walle@gmail.com"}}})
+</code></pre>
+</div>
+
+<p>向联系方式数组中添加了一条邮箱信息</p>
+
+<p>也可以 添加复杂嵌套的文档</p>
+
+<p>可以配合 $each 子操作符来进行复杂的数组操作</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>&gt; db.foo.update({"id": 1}, {"$push": {"$each": {"names": ["eva", "walle", "diascubes"]}}})
+
+&gt; db.foo.findOne()
+{
+    "id": 1,
+    "names": ["eva", "walle", "diascubes"]
+}
+</code></pre>
+</div>
+
+<p>还有 $slice 子修改器来防止数组超出最大长度， $sort 对数组中的对象进行排序， 具体查阅相关文档</p>
+
+<h4 id="section-6">将数组作为数据集使用</h4>
+
+<p>$ne 配合 $push 使用，避免插入重复的值</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>&gt; db.papers.update({"author": {"$ne": "Richie"}}, {"$push": {"author": "Richie"}})
+</code></pre>
+</div>
+
+<p>如果 Richie 不在作者列表中，就添加进去</p>
+
+<p>$addToSet</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>&gt; db.papers.update({"title": "111"}, {"$addToSet": {"author": {"$each":["hah, heh"]}}})    
+</code></pre>
+</div>
+
+<p>用 $addToSet 插入多条数据到 author 列表中， 列表中已经存在的不会重复插入</p>
+
+<h4 id="section-7">删除元素</h4>
+
+<p>$pop 从数组的两端删除一个元素</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>&gt; {"$pop": {"key": 1}}
+</code></pre>
+</div>
+
+<p>从数组尾部删除一个元素</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>&gt; {"$pop": {"key": -1}}
+</code></pre>
+</div>
+
+<p>从数组头部删除一个元素</p>
+
+<p>$pull 基于特定条件删除</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>&gt; db.foo.insert({"names": ["walle", "eva", "tom"]})
+&gt; db.foo.update({}，{"$pull": {”names“: "walle"}})
+</code></pre>
+</div>
+
+<p>walle 会从 names 数组中被移除掉</p>
+
+<h3 id="section-8">删除</h3>
+
+<p>使用 remove 可将文档从数据库中永久删除， 如果没有使用参数，会删除集合内的所有文档，但不会删除集合本身</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>&gt; db.products.remove({"name": "MoYu xxxx"})
+</code></pre>
+</div>
+
+<p>这条数据就被永久的删除了</p>
+
+<p>如果要删除整个集合，直接使用 drop</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>db.products.drop()
+</code></pre>
+</div>
+
+
+  </div>
+
+</article>
+
+      </div>
+    </div>
+
+    <footer class="site-footer">
+
+  <div class="wrapper">
+
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li>黄威威个人博客</li>
+          <li><a href="mailto:walle.wwh@gmail.com">walle.wwh@gmail.com</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col footer-col-2">
+        <ul class="social-media-list">
+          
+          <li>
+            <a href="https://github.com/pangz1"><span class="icon icon--github"><svg viewBox="0 0 16 16"><path fill="#828282" d="M7.999,0.431c-4.285,0-7.76,3.474-7.76,7.761 c0,3.428,2.223,6.337,5.307,7.363c0.388,0.071,0.53-0.168,0.53-0.374c0-0.184-0.007-0.672-0.01-1.32 c-2.159,0.469-2.614-1.04-2.614-1.04c-0.353-0.896-0.862-1.135-0.862-1.135c-0.705-0.481,0.053-0.472,0.053-0.472 c0.779,0.055,1.189,0.8,1.189,0.8c0.692,1.186,1.816,0.843,2.258,0.645c0.071-0.502,0.271-0.843,0.493-1.037 C4.86,11.425,3.049,10.76,3.049,7.786c0-0.847,0.302-1.54,0.799-2.082C3.768,5.507,3.501,4.718,3.924,3.65 c0,0,0.652-0.209,2.134,0.796C6.677,4.273,7.34,4.187,8,4.184c0.659,0.003,1.323,0.089,1.943,0.261 c1.482-1.004,2.132-0.796,2.132-0.796c0.423,1.068,0.157,1.857,0.077,2.054c0.497,0.542,0.798,1.235,0.798,2.082 c0,2.981-1.814,3.637-3.543,3.829c0.279,0.24,0.527,0.713,0.527,1.437c0,1.037-0.01,1.874-0.01,2.129 c0,0.208,0.14,0.449,0.534,0.373c3.081-1.028,5.302-3.935,5.302-7.362C15.76,3.906,12.285,0.431,7.999,0.431z"/></svg>
+</span><span class="username">pangz1</span></a>
+
+          </li>
+          
+
+          
+        </ul>
+      </div>
+
+      <div class="footer-col footer-col-3">
+        <p>喜欢唱歌，骑行，登山，露营，偶尔做饭<br> 以前修自行车的，现在写代码<br> 爱生活的好青年，有对象
+</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+
+
+  </body>
+
+</html>

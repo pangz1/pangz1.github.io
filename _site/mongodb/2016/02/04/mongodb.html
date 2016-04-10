@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>mongodb 基础知识</title>
+  <meta name="description" content="mongodb的一些基本知识，包括文档，集合的基本概念，mongodb的启动和配置以及如何选择数据库文档的操作：包括插入、查询、删除数据，使用修改器对数据进行更新">
+
+  <link rel="stylesheet" href="/css/main.css">
+  <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,600,700,800,700italic,600italic,300' rel='stylesheet' type='text/css'>
+  <link rel="canonical" href="http://yourdomain.com/mongodb/2016/02/04/mongodb.html">
+  <link rel="alternate" type="application/rss+xml" title="胖子" href="http://yourdomain.com/feed.xml">
+</head>
+
+
+  <body>
+
+    <header class="site-header">
+  <hgroup>
+    <a href="/"><h1 class="site-title">胖子</h1></a>
+    <h2>技术改变生活</h2>
+  </hgroup>
+</header>
+
+    <nav>
+  <a href="/">HOME</a>
+  <a href="./blog/">BLOG</a>
+  <a href="./about/">ABOUT ME</a>
+  <a href="/feed.xml" class="rss">RSS</a>
+</nav>
+    
+    <div class="page-content">
+      <div class="wrapper">
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <p class="post-meta"><time datetime="2016-02-04T08:00:16+08:00" itemprop="datePublished">Feb 4, 2016</time></p>
+    <h1 class="post-title" itemprop="name headline">mongodb 基础知识</h1>
+  </header>
+
+  <div class="post-content" itemprop="articleBody">
+    <p>mongodb的一些基本知识，包括文档，集合的基本概念，mongodb的启动和配置以及如何选择数据库
+文档的操作：包括插入、查询、删除数据，使用修改器对数据进行更新</p>
+
+<h3 id="section">文档</h3>
+<p>文档是一个键值对的有序集,一个jvascript对象。</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code><span class="p">{</span><span class="err">“greeting”:</span><span class="nt">"hello world"</span><span class="err">}</span><span class="w">
+</span></code></pre>
+</div>
+
+<h3 id="section-1">集合</h3>
+<p>集合是一组文档，如果文档相当于关系型数据库中的一行，集合就是关系型数据库中的一张表</p>
+
+<h3 id="section-2">子集合</h3>
+<p>组织集合使用 ‘.’ 分隔不同命名空间的子集合。</p>
+
+<p>例如diascubes下的产品是
+diascubes.products，用户是 diascubes.users。</p>
+
+<p>如果对产品进行细分，还可以这样：diascubes.products.cubes表示所有的魔方产品的集合。</p>
+
+<h3 id="mongodb">启动Mongodb</h3>
+
+<p>先创建一个启动的配置文件:</p>
+
+<p>mongod.conf</p>
+
+<p>写入以下内容：</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>port = 8888 
+dbpath = data
+logpath = log/mongod.log
+fork = true
+</code></pre>
+</div>
+
+<p>指定启动时使用该文件的配置</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>mongod -f conf/mongod.conf
+</code></pre>
+</div>
+
+<p>上面的配置制定了端口号，数据存放地址，日志文件，fork表示是否开启子进程</p>
+
+<h3 id="mongo-shell">运行 mongo shell</h3>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>mongo
+</code></pre>
+</div>
+
+<p>mongodb会启动一个本地的server，监听8888端口，如果该端口被占用，则启动失败</p>
+
+<p>默认会连接 test 数据库，并将数据库连接复制给变量 db。 这个变量是通过shell 访问 mongodb 的主要入口点</p>
+
+<p>查看 db 当前指向哪个数据库，可以使用 db 命令</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>&gt;db
+test
+</code></pre>
+</div>
+
+<p>使用 use 命令选择数据库</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>&gt;use diascubes
+switch to db diascubes
+</code></pre>
+</div>
+
+<p>查看 db 指向哪个数据库</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>&gt;db
+diascubes
+</code></pre>
+</div>
+
+<p>通过 db.products 来访问产品集合</p>
+
+<h3 id="section-3">创建</h3>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>&gt; item = {
+    "name": "MoYu xxxx",
+    "brand": "MoYu",
+    "color": "white",
+    "price": "$32.00"
+}
+</code></pre>
+</div>
+
+<p>编辑一个文档，使用 insert 方法将其插入到 products 集合中去</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>db.products.insert(item);
+</code></pre>
+</div>
+
+<p>看是是否插入成功</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>&gt; db.products.findOne()
+{
+    "_id": ObjectId("56b36b5de80119c7791914c6"),
+    "name": "MoYu xxxx",
+    "brand": "MoYu",
+    "color": "white",
+    "price": "$32.00"
+}
+</code></pre>
+</div>
+
+<h3 id="section-4">批量插入</h3>
+
+<p>批量插入使用 batchInsert, 用法与 insert 类似，接受一个文档数组作为参数</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>&gt; db.foo.batchInsert([{"id": 1}, {"id":2}, {"id": 3}])
+</code></pre>
+</div>
+
+<p>一次插入多个文档效率会高很多</p>
+
+<h3 id="section-5">读取</h3>
+
+<p>find 和 findOne 方法用于查询集合中的文档，findOne 只查看一条，find 一次最多查看20条</p>
+
+<p>可以传入一个查询文档作为限制条件</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>&gt; db.products.find({"brand": "MoYu"})
+</code></pre>
+</div>
+
+<p>这条命令会查询出所有 魔域品牌的魔方</p>
+
+<h3 id="section-6">更新</h3>
+
+<p>update 最少接受两个参数，待更新的文档，新的文档</p>
+
+<p>update 常规更新是用新的文档文档完全替换掉旧的文档，适用于大规模迁移的情况</p>
+
+<h3 id="section-7">查询</h3>
+
+<p>find 制定要查询的键值对作为约束条件</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>&gt; db.users.find({"age": 27})
+</code></pre>
+</div>
+
+<p>可以指定多个键值对，多个键值对是 ‘&amp;&amp;’ 操作</p>
+
+<h4 id="section-8">制定需要返回的键</h4>
+
+<p>通过 find 的第二个参数来指定需要返回的键</p>
+
+<p>比如只要返回 username 和 email，可以使用如下方式</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>&gt; db.users.find({}, {"username": 1, "email": 1})
+</code></pre>
+</div>
+
+<p>这样只会返回 username email 和 默认都会返回的 _id</p>
+
+<p>如果不想返回 _id， 还可以这样</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>&gt; db.users.find({}, {"username": 1, "email": 1, "_id": 0})
+</code></pre>
+</div>
+
+<h4 id="section-9">查询条件</h4>
+
+<p>“$lt”, “$lte”, “$gt”, “$gte” 分别代表 “&lt;”, “&lt;=”, “&gt;”, “&gt;=”</p>
+
+<p>查询年龄在 18~30岁之间的用户</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>&gt; db.users.find({"age": {"$gt": 18, "$lt": 30}})
+</code></pre>
+</div>
+
+<h4 id="or">OR查询</h4>
+
+<p>有两种实现OR查询的方法，$in， $or</p>
+
+<p>用 $in 实现单键多个值中的 OR 查询</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>&gt; db.users.find({"name": {"$in": ["walle", "eva", "tom"]}})
+</code></pre>
+</div>
+
+<p>这会查找出 name 为 walle，或者 eva 或者 tom 的用户</p>
+
+<p>$in 可以指定多各种类型的条件和值</p>
+
+<p>用 $or 实现多建的 OR 查询</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>&gt; db.users.find({"$or": {"name": "walle"}, {"age": 29}})
+</code></pre>
+</div>
+
+<p>还可以和 $in 组合</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>&gt; db.users.find({"or": {"name": {"$in": ["walle", "eva", "tom"]}}, {"age": 29}})
+</code></pre>
+</div>
+
+<h4 id="not-">$not 查询</h4>
+
+<p>用来查询与特定模式不匹配的文档</p>
+
+<h3 id="section-10">使用修改器对文档进行局部更新</h3>
+
+<h4 id="set-">$set 修改器</h4>
+
+<p>$set 用来指定一个字段的值，如果这个字段不存在就创建它。</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>&gt; db.products.findOne()
+{
+    "_id" : ObjectId("56b43587e48157aa97a9ed79"),
+    "id" : "1",
+    "brand" : "ShengShou",
+    "itemNo" : "7080A-1",
+    "itemName" : "ShengShou 2x2x2 with matte stick",
+    "color" : "black,white"
+}
+</code></pre>
+</div>
+
+<p>下面为其添加一个包装信息</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>&gt; db.products.update({"id": "1"}, {"$set": {"package": "color box"}})
+</code></pre>
+</div>
+
+<p>之后文档就有 package 信息了</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>&gt; db.products.findOne()
+{
+    "_id" : ObjectId("56b43587e48157aa97a9ed79"),
+    "id" : "1",
+    "brand" : "ShengShou",
+    "itemNo" : "7080A-1",
+    "itemName" : "ShengShou 2x2x2 with matte stick",
+    "color" : "black,white",
+    "package": "color box"
+}
+</code></pre>
+</div>
+
+<p>修改 package 信息</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>&gt; db.products.update({"id": "1"}, {"$set": {"package": "plastic box"}})
+</code></pre>
+</div>
+
+<p>删除 package 信息</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>&gt; db.product.update({"id": "1"}, {"$unset": {"package": 1}})
+</code></pre>
+</div>
+
+<h4 id="inc-">$inc 修改器</h4>
+
+<p>$inc 用来增加已有键的值，如果该键不存在就创建一个</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>&gt; db.products.update({"id": 1}, {"$inc": {"storage": 50}})
+</code></pre>
+</div>
+
+<p>为产品添加一个库存信息，下次库存增加100个</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>&gt; db.products.update({"id": 1}, {"$inc": {"storage": 100}})
+
+&gt; db.products.getOne()
+{
+    "_id" : ObjectId("56b43587e48157aa97a9ed79"),
+    "id" : "1",
+    "brand" : "ShengShou",
+    "itemNo" : "7080A-1",
+    "itemName" : "ShengShou 2x2x2 with matte stick",
+    "color" : "black,white",
+    "package": "color box",
+    "storage": 150
+}
+</code></pre>
+</div>
+
+<p>$inc 修改的键的值必须为数值类型，否则会出现错误</p>
+
+<h3 id="section-11">数组修改器</h3>
+
+<p>$push 会向已有的数组末尾添加一个元素，要是没有就创建一个新的数组</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>&gt; db.foo.update({"id": 1}, {"$push": {"contacts": {"email": "walle@gmail.com"}}})
+</code></pre>
+</div>
+
+<p>向联系方式数组中添加了一条邮箱信息</p>
+
+<p>也可以 添加复杂嵌套的文档</p>
+
+<p>配合 $each 子操作符来进行复杂的数组操作</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>&gt; db.foo.update({"id": 1}, {"$push": {"$each": {"names": ["eva", "walle", "diascubes"]}}})
+
+&gt; db.foo.findOne()
+{
+    "id": 1,
+    "names": ["eva", "walle", "diascubes"]
+}
+</code></pre>
+</div>
+
+<p>还有 $slice 子修改器来防止数组超出最大长度， $sort 对数组中的对象进行排序， 具体查阅相关文档</p>
+
+<h4 id="section-12">将数组作为数据集使用</h4>
+
+<p>$ne 配合 $push 使用，避免插入重复的值</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>&gt; db.papers.update({"author": {"$ne": "Richie"}}, {"$push": {"author": "Richie"}})
+</code></pre>
+</div>
+
+<p>如果 Richie 不在作者列表中，就添加进去</p>
+
+<p>$addToSet</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>&gt; db.papers.update({"title": "111"}, {"$addToSet": {"author": {"$each":["hah, heh"]}}})    
+</code></pre>
+</div>
+
+<p>用 $addToSet 插入多条数据到 author 列表中， 列表中已经存在的不会重复插入</p>
+
+<h4 id="section-13">删除元素</h4>
+
+<p>$pop 从数组的两端删除一个元素</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>&gt; {"$pop": {"key": 1}}
+</code></pre>
+</div>
+
+<p>从数组尾部删除一个元素</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>&gt; {"$pop": {"key": -1}}
+</code></pre>
+</div>
+
+<p>从数组头部删除一个元素</p>
+
+<p>$pull 基于特定条件删除</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>&gt; db.foo.insert({"names": ["walle", "eva", "tom"]})
+&gt; db.foo.update({}，{"$pull": {”names“: "walle"}})
+</code></pre>
+</div>
+
+<p>walle 会从 names 数组中被移除掉</p>
+
+<h3 id="section-14">删除</h3>
+
+<p>使用 remove 可将文档从数据库中永久删除， 如果没有使用参数，会报错</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>&gt; db.products.remove({"name": "MoYu xxxx"})
+</code></pre>
+</div>
+
+<p>这条数据就被永久的删除了</p>
+
+<p>如果要删除整个集合，直接使用 drop</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>&gt; db.products.drop()
+</code></pre>
+</div>
+
+<h3 id="upsertupdate">upsert（update的第三个参数）</h3>
+
+<p>如果没有找到符合更新条件的文档，就会以这个条件和更新文档为基础创建一个新的文档，否则，正常更新。</p>
+
+<p>比如，记录网站访问次数，通过url查询，如果存在就增加访问次数，否则就新建一个文档</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>&gt; db.site.update({'url': '/blog'}, {'$inc': {'pageviews': 1}}, true);
+</code></pre>
+</div>
+
+<h3 id="setoninsert">$setOnInsert，只在创建时赋值，之后不再更新</h3>
+
+<p>比如创建时间这个字段，只需要创建的时候赋值，后面无需对其进行修改，就可以使用$setOnInsert</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>&gt; db.users.update({}, {"$setOnInsert": {"createTime": new Date()}}, true)
+</code></pre>
+</div>
+
+<h3 id="save">save函数</h3>
+
+<p>save是一个shell函数，如果文档不存在就会创建，否则就更新该文档，它只有一个参数，就是文档。如果该文档有_id键就会执行upsert，否则就会调用insert。</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>&gt; var x = db.foo.findOne()
+&gt; x.num = 42
+&gt; db.foo.save(x)
+</code></pre>
+</div>
+
+<h3 id="section-15">更新多个文档</h3>
+
+<p>update默认只更新第一个匹配的文档，要更新所有匹配到的文档，可以将update的第四个参数设置为true，只能使用 $set 修改器</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>&gt; db.users.update({'birthday': '10/13/1988'}, {$set: {'gift': 'Happy birthday'}}, false, true)
+</code></pre>
+</div>
+
+<p>要想知道更新了多少个文档，可以运行 getLastError 命令 （返回最后一次操作的相关信息）</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>&gt; db.runCommand({getLastError: 1})
+{
+    "err": 1,
+    "updatedExisting": true,
+    "n": 5,
+    "ok": true
+}
+</code></pre>
+</div>
+
+<p>n:5 说明更新了5条，updatedExisting:true 说明是对已有文档进行更新</p>
+
+<h3 id="section-16">返回被更新的文档</h3>
+
+
+  </div>
+
+</article>
+
+      </div>
+    </div>
+
+    <footer class="site-footer">
+  
+  <div class="wrapper">
+    <a href="https://github.com/pangz1" target="_blank"><span class="icon icon--github"><svg viewBox="0 0 16 16"><path fill="#828282" d="M7.999,0.431c-4.285,0-7.76,3.474-7.76,7.761 c0,3.428,2.223,6.337,5.307,7.363c0.388,0.071,0.53-0.168,0.53-0.374c0-0.184-0.007-0.672-0.01-1.32 c-2.159,0.469-2.614-1.04-2.614-1.04c-0.353-0.896-0.862-1.135-0.862-1.135c-0.705-0.481,0.053-0.472,0.053-0.472 c0.779,0.055,1.189,0.8,1.189,0.8c0.692,1.186,1.816,0.843,2.258,0.645c0.071-0.502,0.271-0.843,0.493-1.037 C4.86,11.425,3.049,10.76,3.049,7.786c0-0.847,0.302-1.54,0.799-2.082C3.768,5.507,3.501,4.718,3.924,3.65 c0,0,0.652-0.209,2.134,0.796C6.677,4.273,7.34,4.187,8,4.184c0.659,0.003,1.323,0.089,1.943,0.261 c1.482-1.004,2.132-0.796,2.132-0.796c0.423,1.068,0.157,1.857,0.077,2.054c0.497,0.542,0.798,1.235,0.798,2.082 c0,2.981-1.814,3.637-3.543,3.829c0.279,0.24,0.527,0.713,0.527,1.437c0,1.037-0.01,1.874-0.01,2.129 c0,0.208,0.14,0.449,0.534,0.373c3.081-1.028,5.302-3.935,5.302-7.362C15.76,3.906,12.285,0.431,7.999,0.431z"/></svg>
+</span><span class="username">pangz1</span></a>
+
+  </div>
+
+</footer>
+
+
+  </body>
+
+</html>

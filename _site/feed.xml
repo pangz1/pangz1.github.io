@@ -1,0 +1,798 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>胖子</title>
+    <description>喜欢唱歌，骑行，登山，露营，偶尔做饭&lt;br&gt; 以前修自行车的，现在写代码&lt;br&gt; 爱生活的好青年，有对象
+</description>
+    <link>http://yourdomain.com/</link>
+    <atom:link href="http://yourdomain.com/feed.xml" rel="self" type="application/rss+xml"/>
+    <pubDate>Sun, 10 Apr 2016 20:42:39 +0800</pubDate>
+    <lastBuildDate>Sun, 10 Apr 2016 20:42:39 +0800</lastBuildDate>
+    <generator>Jekyll v3.1.1</generator>
+    
+      <item>
+        <title>flex 布局入门</title>
+        <description>&lt;p&gt;flex 是 flexible box 的简称, 也就是弹性盒模型， 所以它并不是一个单独的属性，而是一套完整的模型，包含了一整套的属性，其中一些属性是设置在容器（父元素，称之为flex container）上的，其余的属性设置在子元素（flex items）上。&lt;/p&gt;
+
+&lt;h3 id=&quot;section&quot;&gt;基本概念&lt;/h3&gt;
+&lt;p&gt;弹性盒模型基于 flex-flow directions 布局，搞一张图便于理解&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/flex/810695-20150919145658976-1688642409.png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;flex items 沿着主轴（从main-start到main-end）或者交叉轴（从cross-start到cross-end）排列。&lt;/p&gt;
+
+&lt;p&gt;上图所示的 flex-container 中有两根轴，主轴（main axis）和交叉轴（cross axis），主轴从 main start 开始，到 mian end 结束，交叉轴从cross start 开始，到cross end 结束。&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;主轴（main axis）——- flex-items沿着flex容器的主轴排列，注意，主轴并不一定是横向的，这取决于 flex-direction 属性的值&lt;/li&gt;
+  &lt;li&gt;交叉轴（cross axis）——- 垂直于主轴，方向也取决于 flex-direction 属性的值&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;flex-container-&quot;&gt;flex-container 的属性&lt;/h3&gt;
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;display&lt;/code&gt;&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;/** css **/
+.container {
+  display: flex;   /* or inline-flex */
+  display: -webkit-flex; 
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;flex-direction&lt;/code&gt;&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;.container{
+  flex-direction: row | row-reverse | column | column-reverse;
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;flex-wrap&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;默认情况下，flex-items 会在一行排列，超出父级宽度不会换行&lt;br /&gt;
+如果设置为&lt;code class=&quot;highlighter-rouge&quot;&gt;flex-wrap: wrap&lt;/code&gt;，flex-items宽度总和超过父级宽度时会按照下图所示排列&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/flex/810695-20150919145700398-861125878.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;.container{
+	flex-wrap: nowrap | wrap | wrap-reverse;
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;nowrap(default): 单行从左到右排列&lt;/li&gt;
+  &lt;li&gt;wrap ： 多行从左到右排列&lt;/li&gt;
+  &lt;li&gt;wrap-reverse：多行从右到左排列&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;下图分别为wrap和wrap-reverse的情形&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/flex/810695-20150919145703117-1604069970.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;flex-flow&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;flex-flow 是 flex-direction 和 flex-wrap 的复合形式，默认值是 &lt;code class=&quot;highlighter-rouge&quot;&gt;row nowrap&lt;/code&gt;。&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;.container{
+	flex-flow: &amp;lt;flex-direction&amp;gt; &amp;lt;flex-wrap&amp;gt;;
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;justify-content&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;justify-content&lt;/code&gt;定义了 flex-items 在主轴上的对齐方式。&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;.container{
+	justify-content: flex-start | flex-end | center | space-between | sapce-around;
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/flex/810695-20150920135731617-616558862.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;该属性具体的对齐方式与 &lt;code class=&quot;highlighter-rouge&quot;&gt;flex-direction&lt;/code&gt; 的值有关，下面假设 &lt;code class=&quot;highlighter-rouge&quot;&gt;flex-direction: row;&lt;/code&gt; 即主轴方向为从左到右&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;flex-direction: flex-start&lt;/code&gt; — 左对齐&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;flex-direction: flex-end&lt;/code&gt; — 右对齐&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;flex-direction: center&lt;/code&gt; — 居中对齐&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;flex-direction: space-between&lt;/code&gt; — 两端对齐，items之间的间隔都相等&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;flex-direction: space-around&lt;/code&gt; — 每个items两侧的间隔相等&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;align-items&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;该属性定义 flex-items 在交叉轴上的对齐方式&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/flex/810695-20150920135959836-2135609919.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;align-content&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;该属性定义 flex-container 中的行在交叉轴上的对齐方式，与 &lt;code class=&quot;highlighter-rouge&quot;&gt;justify-content&lt;/code&gt; 定义单个items在主轴上的对齐方式相似。当 flex-container 只有一行时，该属性不起作用&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/flex/810695-20150920140122211-895683035.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;stretch&lt;/code&gt; 是默认值，默认每行拉伸占满容器的剩余空间&lt;/p&gt;
+
+&lt;h3 id=&quot;flex-items-&quot;&gt;flex items 的属性&lt;/h3&gt;
+&lt;ul&gt;
+  &lt;li&gt;order: 定义 items 的排列顺序，数值越小，排列越靠前，默认为0&lt;/li&gt;
+  &lt;li&gt;flex-grow: 定义项目的放大比例，默认为0，即如果存在剩余空间，也不放大。&lt;/li&gt;
+  &lt;li&gt;flex-shrink: 定义了项目的缩小比例，默认为1，即如果空间不足，该项目将缩小。&lt;/li&gt;
+  &lt;li&gt;flex-basis: 定义了在分配多余空间之前，项目占据的主轴空间（main size），默认值为auto，负值无效&lt;/li&gt;
+  &lt;li&gt;flex: flex属性是flex-grow, flex-shrink 和 flex-basis的简写，默认值为0 1 auto。前两个属性可选。&lt;/li&gt;
+  &lt;li&gt;align-self: align-self属性允许单个项目有与其他项目不一样的对齐方式，可覆盖align-items属性。默认值为auto，表示继承父元素的align-items属性，如果没有父元素，则等同于stretch。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;flex-grow&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;定义 flex-item 的扩展比例，默认值为 0，如果没有定义该属性，是不会其分配空间的，搞一段代码便于理解：&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&amp;lt;div class=&quot;container&quot;&amp;gt;
+	&amp;lt;div class=&quot;item item1&quot;&amp;gt;1&amp;lt;/div&amp;gt;
+	&amp;lt;div class=&quot;item item2&quot;&amp;gt;2&amp;lt;/div&amp;gt;
+	&amp;lt;div class=&quot;item item3&quot;&amp;gt;3&amp;lt;/div&amp;gt;
+	&amp;lt;div class=&quot;item item4&quot;&amp;gt;4&amp;lt;/div&amp;gt;
+&amp;lt;/div&amp;gt;
+
+.container{ display: flex; }
+.item1{ flex-grow: 1; }
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;我们只给item1加了 &lt;code class=&quot;highlighter-rouge&quot;&gt;flex-grow ： 1；&lt;/code&gt; 其他item的该属性都是默认值0，不会分配剩余空间，所有的剩余空间都会分配给 item1，结果如下：&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/flex/810695-20150920151819695-1942916452.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;.item{ margin-right: 10px;}
+.item1{ flex-grow: 1;}
+.item2{ flex-grow: 2;}
+.item3{ flex-grow: 3;}
+.item4{ flex-grow: 4; margin-right: 0;}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;现在富余空间被分成了（1+2+3+4）10份，总宽度是400，
+富余空间宽度为 400 - 10&lt;em&gt;3 – 20&lt;/em&gt;4 = 290px，每份是29px。&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;item1的宽度为 1*29+20=49px&lt;/li&gt;
+  &lt;li&gt;item2的宽度为  2*29+20=78px&lt;/li&gt;
+  &lt;li&gt;item3的宽度为 3*29+20=107px&lt;/li&gt;
+  &lt;li&gt;item4的宽度为 4*29+20=136px&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;具体请戳&lt;a href=&quot;http://codepen.io/walle2/pen/yYJYgN&quot;&gt;这里&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;flex-shrink&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;定义 flex-items 的收缩比例，当 flex-items 的总宽度超出容器宽度时，该比例决定，每个item将收缩多少，具体计算公式为：&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;收缩尺寸 = （总宽 - 容器宽度）* scale；
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;scale ： 每个 item 的 flex-shrink 的值占所有 item 的 flex-shrink 的总和的比例, 没有设置该属性的默认值为 1&lt;/p&gt;
+
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;flex-basis&lt;/code&gt;&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;flex-basis ： &amp;lt;length&amp;gt; | &amp;lt;percentage&amp;gt; | auto | content
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;指定根据伸缩比率计算出剩余空间的分布之前， flex-items的起始长度，&lt;br /&gt;
+在flex组合属性中，如果该值省略，会被默认为0%。&lt;br /&gt;
+在flex组合属性中，如果该值被设置为 auto， 则计算值为 自身的 width 值，如果没有指定宽度，则取决于其内容&lt;/p&gt;
+
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;align-self&lt;/code&gt;&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;align-self : auto | flex-start | flex-end | center | baseline | stretch   
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;flex&lt;/code&gt;&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;flex ： none | [ &amp;lt;flex-grow&amp;gt; &amp;lt;flex-shrink&amp;gt; ? || &amp;lt;flex-basis&amp;gt;]
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;符合属性，规定弹性盒模型如何为其子元素分配空间。&lt;/p&gt;
+
+&lt;p&gt;默认值为 &lt;code class=&quot;highlighter-rouge&quot;&gt;0 1 auto&lt;/code&gt; ， &lt;code class=&quot;highlighter-rouge&quot;&gt;flex-grow&lt;/code&gt; 和 &lt;code class=&quot;highlighter-rouge&quot;&gt;flex-shrink&lt;/code&gt; 属性是可选的，也就是说可以在 flex 声明中被省略，如果省略了该属性值，则该属性值被设置为 1，相当于以下设置&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;flex-grow: 1;
+flex-shrink: 1;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;一些常见的 flex 属性值：&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;flex : 0 auto / flex : initial
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;默认值，相当于 &lt;code class=&quot;highlighter-rouge&quot;&gt;flex: 0 1 auto;&lt;/code&gt; 该值设置 flex-items 的尺寸为其 width / height ，如果 flex-items 的 width 和 height 设置为 auto，则根据他们宽高自适应其内容。&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;flex ： auto
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;相当于 &lt;code class=&quot;highlighter-rouge&quot;&gt;flex: 1 1 auto;&lt;/code&gt; 该值允许 设置该值的 item 占据主轴上的所有剩余空间， 如果所有的的item都被设置为 auto， 所有的剩余空间会平均分给每个item。&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;flex ： none
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;相当于 &lt;code class=&quot;highlighter-rouge&quot;&gt;flex: 0 0 auto;&lt;/code&gt;和 默认值相似，但是该属性不允许 items shrink，即使在尺寸超出容器的情况下&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;flex ： 任何正数
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;相当于 &lt;code class=&quot;highlighter-rouge&quot;&gt;flex: &amp;lt;正数&amp;gt; 1 0%;&lt;/code&gt;  该属性设置 flex-basis 的值为 0， item 会获得指定比例的富余空间.&lt;/p&gt;
+
+&lt;h3 id=&quot;flex-&quot;&gt;flex 的一些实例&lt;/h3&gt;
+
+&lt;p&gt;垂直水平居中&lt;a href=&quot;http://codepen.io/walle2/pen/Bozoaq&quot;&gt;(点击查看)&lt;/a&gt;&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;.container{
+	display: flex;
+	align-items: center;   /* 设置交叉轴上的对齐方式 */
+	justify-content: center;  /* 设置主轴上的对齐方式 */
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;圣杯布局&lt;a href=&quot;http://codepen.io/walle2/pen/KdMdpO&quot;&gt;(点击查看)&lt;/a&gt;&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&amp;lt;!-- html --&amp;gt;
+&amp;lt;header&amp;gt;&amp;lt;/header&amp;gt;
+&amp;lt;div class=&quot;container&quot;&amp;gt;
+	&amp;lt;section class=&quot;main&quot;&amp;gt;&amp;lt;/section&amp;gt;
+	&amp;lt;aside&amp;gt;&amp;lt;/aside&amp;gt;
+&amp;lt;/div&amp;gt;
+&amp;lt;footer&amp;gt;&amp;lt;/footer&amp;gt;
+
+.container{
+	display: flex;
+	align-items: stretch;
+}
+
+section{
+	-webkit-flex: 2 1 500px;
+	-webkit-box-flex: 2;
+	flex: 5 1 500px;
+	margin-right: 1%;
+}
+aside{
+	-webkit-flex: 1 2 250px;
+	-webkit-box-flex: 1;
+	flex: 1 2 250px;
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;固定的页脚&lt;a href=&quot;http://codepen.io/walle2/pen/Vvjvay&quot;&gt;(点击查看)&lt;/a&gt;,不用flex实现的戳&lt;a href=&quot;http://cbracco.me/css-sticky-footer-effect/&quot;&gt;这里&lt;/a&gt;&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&amp;lt;body&amp;gt;
+	&amp;lt;header&amp;gt;&amp;lt;!-- header stuff --&amp;gt;&amp;lt;/header&amp;gt;
+	&amp;lt;section class=&quot;content&quot;&amp;gt;&amp;lt;!-- main content --&amp;gt;&amp;lt;/section&amp;gt;
+	&amp;lt;footer&amp;gt;&amp;lt;!-- footer stuff --&amp;gt;&amp;lt;/footer&amp;gt;
+&amp;lt;/body&amp;gt;
+
+html{
+	height: 100%;
+}
+body{
+	display: flex;
+	min-height: 100%;
+	flex-direction: column;
+}
+section.content{
+	flex-grow: 1;
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h3 id=&quot;section-1&quot;&gt;兼容老浏览器&lt;/h3&gt;
+&lt;p&gt;flex发展至今总共经历了三个版本，分别是  &lt;a href=&quot;https://css-tricks.com/old-flexbox-and-new-flexbox/&quot;&gt;old, tweener, new&lt;/a&gt;， 为了更好实现兼容，最好的方法是，用最新的语法写，然后通过 Autoprefixer 来处理浏览器前缀问题，或者也可以用 sass 封装一个 mixin。&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;.new{
+	display: flex;
+}
+.tweener{
+	display: flexbox;
+}
+.old{
+	display: box;
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;&lt;img src=&quot;/Users/pangzi/pangz1.github.io/assets/images/flex/810695-20150920140141367-2071703170.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;@mixin flexbox() {
+	display: -webkit-box;
+	display: -moz-box;
+	display: -ms-flexbox;
+	display: -webkit-flex;
+	display: flex;
+}
+
+@mixin flex($values) {
+	-webkit-box-flex: $values;
+	-moz-box-flex:  $values;
+	-webkit-flex:  $values;
+	-ms-flex:  $values;
+	flex:  $values;
+}
+
+@mixin order($val) {
+	-webkit-box-ordinal-group: $val;  
+	-moz-box-ordinal-group: $val;     
+	-ms-flex-order: $val;     
+	-webkit-order: $val;  
+	order: $val;
+}
+
+.wrapper {
+	@include flexbox();
+}
+
+.item {
+	@include flex(1 200px);
+	@include order(2);
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h3 id=&quot;section-2&quot;&gt;参考资料&lt;/h3&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://css-tricks.com/snippets/css/a-guide-to-flexbox/&quot;&gt;A Complete Guide to Flexbox&lt;/a&gt;&lt;br /&gt;
+&lt;a href=&quot;http://tympanus.net/codrops/css_reference/flexbox/&quot;&gt;Flexbox Codrops CSS Reference&lt;/a&gt;&lt;br /&gt;
+&lt;a href=&quot;http://css.doyoe.com/&quot;&gt;css在线参考手册&lt;/a&gt;&lt;/p&gt;
+</description>
+        <pubDate>Thu, 04 Feb 2016 08:00:16 +0800</pubDate>
+        <link>http://yourdomain.com/css/2016/02/04/flex.html</link>
+        <guid isPermaLink="true">http://yourdomain.com/css/2016/02/04/flex.html</guid>
+        
+        
+        <category>css</category>
+        
+      </item>
+    
+      <item>
+        <title>mongodb 基础知识</title>
+        <description>&lt;p&gt;mongodb的一些基本知识，包括文档，集合的基本概念，mongodb的启动和配置以及如何选择数据库
+文档的操作：包括插入、查询、删除数据，使用修改器对数据进行更新&lt;/p&gt;
+
+&lt;h3 id=&quot;section&quot;&gt;文档&lt;/h3&gt;
+&lt;p&gt;文档是一个键值对的有序集,一个jvascript对象。&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;“greeting”:&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&quot;hello world&quot;&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h3 id=&quot;section-1&quot;&gt;集合&lt;/h3&gt;
+&lt;p&gt;集合是一组文档，如果文档相当于关系型数据库中的一行，集合就是关系型数据库中的一张表&lt;/p&gt;
+
+&lt;h3 id=&quot;section-2&quot;&gt;子集合&lt;/h3&gt;
+&lt;p&gt;组织集合使用 ‘.’ 分隔不同命名空间的子集合。&lt;/p&gt;
+
+&lt;p&gt;例如diascubes下的产品是
+diascubes.products，用户是 diascubes.users。&lt;/p&gt;
+
+&lt;p&gt;如果对产品进行细分，还可以这样：diascubes.products.cubes表示所有的魔方产品的集合。&lt;/p&gt;
+
+&lt;h3 id=&quot;mongodb&quot;&gt;启动Mongodb&lt;/h3&gt;
+
+&lt;p&gt;先创建一个启动的配置文件:&lt;/p&gt;
+
+&lt;p&gt;mongod.conf&lt;/p&gt;
+
+&lt;p&gt;写入以下内容：&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;port = 8888 
+dbpath = data
+logpath = log/mongod.log
+fork = true
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;指定启动时使用该文件的配置&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;mongod -f conf/mongod.conf
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;上面的配置制定了端口号，数据存放地址，日志文件，fork表示是否开启子进程&lt;/p&gt;
+
+&lt;h3 id=&quot;mongo-shell&quot;&gt;运行 mongo shell&lt;/h3&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;mongo
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;mongodb会启动一个本地的server，监听8888端口，如果该端口被占用，则启动失败&lt;/p&gt;
+
+&lt;p&gt;默认会连接 test 数据库，并将数据库连接复制给变量 db。 这个变量是通过shell 访问 mongodb 的主要入口点&lt;/p&gt;
+
+&lt;p&gt;查看 db 当前指向哪个数据库，可以使用 db 命令&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&amp;gt;db
+test
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;使用 use 命令选择数据库&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&amp;gt;use diascubes
+switch to db diascubes
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;查看 db 指向哪个数据库&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&amp;gt;db
+diascubes
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;通过 db.products 来访问产品集合&lt;/p&gt;
+
+&lt;h3 id=&quot;section-3&quot;&gt;创建&lt;/h3&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&amp;gt; item = {
+    &quot;name&quot;: &quot;MoYu xxxx&quot;,
+    &quot;brand&quot;: &quot;MoYu&quot;,
+    &quot;color&quot;: &quot;white&quot;,
+    &quot;price&quot;: &quot;$32.00&quot;
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;编辑一个文档，使用 insert 方法将其插入到 products 集合中去&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;db.products.insert(item);
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;看是是否插入成功&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&amp;gt; db.products.findOne()
+{
+    &quot;_id&quot;: ObjectId(&quot;56b36b5de80119c7791914c6&quot;),
+    &quot;name&quot;: &quot;MoYu xxxx&quot;,
+    &quot;brand&quot;: &quot;MoYu&quot;,
+    &quot;color&quot;: &quot;white&quot;,
+    &quot;price&quot;: &quot;$32.00&quot;
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h3 id=&quot;section-4&quot;&gt;批量插入&lt;/h3&gt;
+
+&lt;p&gt;批量插入使用 batchInsert, 用法与 insert 类似，接受一个文档数组作为参数&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&amp;gt; db.foo.batchInsert([{&quot;id&quot;: 1}, {&quot;id&quot;:2}, {&quot;id&quot;: 3}])
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;一次插入多个文档效率会高很多&lt;/p&gt;
+
+&lt;h3 id=&quot;section-5&quot;&gt;读取&lt;/h3&gt;
+
+&lt;p&gt;find 和 findOne 方法用于查询集合中的文档，findOne 只查看一条，find 一次最多查看20条&lt;/p&gt;
+
+&lt;p&gt;可以传入一个查询文档作为限制条件&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&amp;gt; db.products.find({&quot;brand&quot;: &quot;MoYu&quot;})
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;这条命令会查询出所有 魔域品牌的魔方&lt;/p&gt;
+
+&lt;h3 id=&quot;section-6&quot;&gt;更新&lt;/h3&gt;
+
+&lt;p&gt;update 最少接受两个参数，待更新的文档，新的文档&lt;/p&gt;
+
+&lt;p&gt;update 常规更新是用新的文档文档完全替换掉旧的文档，适用于大规模迁移的情况&lt;/p&gt;
+
+&lt;h3 id=&quot;section-7&quot;&gt;查询&lt;/h3&gt;
+
+&lt;p&gt;find 制定要查询的键值对作为约束条件&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&amp;gt; db.users.find({&quot;age&quot;: 27})
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;可以指定多个键值对，多个键值对是 ‘&amp;amp;&amp;amp;’ 操作&lt;/p&gt;
+
+&lt;h4 id=&quot;section-8&quot;&gt;制定需要返回的键&lt;/h4&gt;
+
+&lt;p&gt;通过 find 的第二个参数来指定需要返回的键&lt;/p&gt;
+
+&lt;p&gt;比如只要返回 username 和 email，可以使用如下方式&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&amp;gt; db.users.find({}, {&quot;username&quot;: 1, &quot;email&quot;: 1})
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;这样只会返回 username email 和 默认都会返回的 _id&lt;/p&gt;
+
+&lt;p&gt;如果不想返回 _id， 还可以这样&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&amp;gt; db.users.find({}, {&quot;username&quot;: 1, &quot;email&quot;: 1, &quot;_id&quot;: 0})
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h4 id=&quot;section-9&quot;&gt;查询条件&lt;/h4&gt;
+
+&lt;p&gt;“$lt”, “$lte”, “$gt”, “$gte” 分别代表 “&amp;lt;”, “&amp;lt;=”, “&amp;gt;”, “&amp;gt;=”&lt;/p&gt;
+
+&lt;p&gt;查询年龄在 18~30岁之间的用户&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&amp;gt; db.users.find({&quot;age&quot;: {&quot;$gt&quot;: 18, &quot;$lt&quot;: 30}})
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h4 id=&quot;or&quot;&gt;OR查询&lt;/h4&gt;
+
+&lt;p&gt;有两种实现OR查询的方法，$in， $or&lt;/p&gt;
+
+&lt;p&gt;用 $in 实现单键多个值中的 OR 查询&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&amp;gt; db.users.find({&quot;name&quot;: {&quot;$in&quot;: [&quot;walle&quot;, &quot;eva&quot;, &quot;tom&quot;]}})
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;这会查找出 name 为 walle，或者 eva 或者 tom 的用户&lt;/p&gt;
+
+&lt;p&gt;$in 可以指定多各种类型的条件和值&lt;/p&gt;
+
+&lt;p&gt;用 $or 实现多建的 OR 查询&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&amp;gt; db.users.find({&quot;$or&quot;: {&quot;name&quot;: &quot;walle&quot;}, {&quot;age&quot;: 29}})
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;还可以和 $in 组合&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&amp;gt; db.users.find({&quot;or&quot;: {&quot;name&quot;: {&quot;$in&quot;: [&quot;walle&quot;, &quot;eva&quot;, &quot;tom&quot;]}}, {&quot;age&quot;: 29}})
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h4 id=&quot;not-&quot;&gt;$not 查询&lt;/h4&gt;
+
+&lt;p&gt;用来查询与特定模式不匹配的文档&lt;/p&gt;
+
+&lt;h3 id=&quot;section-10&quot;&gt;使用修改器对文档进行局部更新&lt;/h3&gt;
+
+&lt;h4 id=&quot;set-&quot;&gt;$set 修改器&lt;/h4&gt;
+
+&lt;p&gt;$set 用来指定一个字段的值，如果这个字段不存在就创建它。&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&amp;gt; db.products.findOne()
+{
+    &quot;_id&quot; : ObjectId(&quot;56b43587e48157aa97a9ed79&quot;),
+    &quot;id&quot; : &quot;1&quot;,
+    &quot;brand&quot; : &quot;ShengShou&quot;,
+    &quot;itemNo&quot; : &quot;7080A-1&quot;,
+    &quot;itemName&quot; : &quot;ShengShou 2x2x2 with matte stick&quot;,
+    &quot;color&quot; : &quot;black,white&quot;
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;下面为其添加一个包装信息&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&amp;gt; db.products.update({&quot;id&quot;: &quot;1&quot;}, {&quot;$set&quot;: {&quot;package&quot;: &quot;color box&quot;}})
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;之后文档就有 package 信息了&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&amp;gt; db.products.findOne()
+{
+    &quot;_id&quot; : ObjectId(&quot;56b43587e48157aa97a9ed79&quot;),
+    &quot;id&quot; : &quot;1&quot;,
+    &quot;brand&quot; : &quot;ShengShou&quot;,
+    &quot;itemNo&quot; : &quot;7080A-1&quot;,
+    &quot;itemName&quot; : &quot;ShengShou 2x2x2 with matte stick&quot;,
+    &quot;color&quot; : &quot;black,white&quot;,
+    &quot;package&quot;: &quot;color box&quot;
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;修改 package 信息&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&amp;gt; db.products.update({&quot;id&quot;: &quot;1&quot;}, {&quot;$set&quot;: {&quot;package&quot;: &quot;plastic box&quot;}})
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;删除 package 信息&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&amp;gt; db.product.update({&quot;id&quot;: &quot;1&quot;}, {&quot;$unset&quot;: {&quot;package&quot;: 1}})
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h4 id=&quot;inc-&quot;&gt;$inc 修改器&lt;/h4&gt;
+
+&lt;p&gt;$inc 用来增加已有键的值，如果该键不存在就创建一个&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&amp;gt; db.products.update({&quot;id&quot;: 1}, {&quot;$inc&quot;: {&quot;storage&quot;: 50}})
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;为产品添加一个库存信息，下次库存增加100个&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&amp;gt; db.products.update({&quot;id&quot;: 1}, {&quot;$inc&quot;: {&quot;storage&quot;: 100}})
+
+&amp;gt; db.products.getOne()
+{
+    &quot;_id&quot; : ObjectId(&quot;56b43587e48157aa97a9ed79&quot;),
+    &quot;id&quot; : &quot;1&quot;,
+    &quot;brand&quot; : &quot;ShengShou&quot;,
+    &quot;itemNo&quot; : &quot;7080A-1&quot;,
+    &quot;itemName&quot; : &quot;ShengShou 2x2x2 with matte stick&quot;,
+    &quot;color&quot; : &quot;black,white&quot;,
+    &quot;package&quot;: &quot;color box&quot;,
+    &quot;storage&quot;: 150
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;$inc 修改的键的值必须为数值类型，否则会出现错误&lt;/p&gt;
+
+&lt;h3 id=&quot;section-11&quot;&gt;数组修改器&lt;/h3&gt;
+
+&lt;p&gt;$push 会向已有的数组末尾添加一个元素，要是没有就创建一个新的数组&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&amp;gt; db.foo.update({&quot;id&quot;: 1}, {&quot;$push&quot;: {&quot;contacts&quot;: {&quot;email&quot;: &quot;walle@gmail.com&quot;}}})
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;向联系方式数组中添加了一条邮箱信息&lt;/p&gt;
+
+&lt;p&gt;也可以 添加复杂嵌套的文档&lt;/p&gt;
+
+&lt;p&gt;配合 $each 子操作符来进行复杂的数组操作&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&amp;gt; db.foo.update({&quot;id&quot;: 1}, {&quot;$push&quot;: {&quot;$each&quot;: {&quot;names&quot;: [&quot;eva&quot;, &quot;walle&quot;, &quot;diascubes&quot;]}}})
+
+&amp;gt; db.foo.findOne()
+{
+    &quot;id&quot;: 1,
+    &quot;names&quot;: [&quot;eva&quot;, &quot;walle&quot;, &quot;diascubes&quot;]
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;还有 $slice 子修改器来防止数组超出最大长度， $sort 对数组中的对象进行排序， 具体查阅相关文档&lt;/p&gt;
+
+&lt;h4 id=&quot;section-12&quot;&gt;将数组作为数据集使用&lt;/h4&gt;
+
+&lt;p&gt;$ne 配合 $push 使用，避免插入重复的值&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&amp;gt; db.papers.update({&quot;author&quot;: {&quot;$ne&quot;: &quot;Richie&quot;}}, {&quot;$push&quot;: {&quot;author&quot;: &quot;Richie&quot;}})
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;如果 Richie 不在作者列表中，就添加进去&lt;/p&gt;
+
+&lt;p&gt;$addToSet&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&amp;gt; db.papers.update({&quot;title&quot;: &quot;111&quot;}, {&quot;$addToSet&quot;: {&quot;author&quot;: {&quot;$each&quot;:[&quot;hah, heh&quot;]}}})    
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;用 $addToSet 插入多条数据到 author 列表中， 列表中已经存在的不会重复插入&lt;/p&gt;
+
+&lt;h4 id=&quot;section-13&quot;&gt;删除元素&lt;/h4&gt;
+
+&lt;p&gt;$pop 从数组的两端删除一个元素&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&amp;gt; {&quot;$pop&quot;: {&quot;key&quot;: 1}}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;从数组尾部删除一个元素&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&amp;gt; {&quot;$pop&quot;: {&quot;key&quot;: -1}}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;从数组头部删除一个元素&lt;/p&gt;
+
+&lt;p&gt;$pull 基于特定条件删除&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&amp;gt; db.foo.insert({&quot;names&quot;: [&quot;walle&quot;, &quot;eva&quot;, &quot;tom&quot;]})
+&amp;gt; db.foo.update({}，{&quot;$pull&quot;: {”names“: &quot;walle&quot;}})
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;walle 会从 names 数组中被移除掉&lt;/p&gt;
+
+&lt;h3 id=&quot;section-14&quot;&gt;删除&lt;/h3&gt;
+
+&lt;p&gt;使用 remove 可将文档从数据库中永久删除， 如果没有使用参数，会报错&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&amp;gt; db.products.remove({&quot;name&quot;: &quot;MoYu xxxx&quot;})
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;这条数据就被永久的删除了&lt;/p&gt;
+
+&lt;p&gt;如果要删除整个集合，直接使用 drop&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&amp;gt; db.products.drop()
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h3 id=&quot;upsertupdate&quot;&gt;upsert（update的第三个参数）&lt;/h3&gt;
+
+&lt;p&gt;如果没有找到符合更新条件的文档，就会以这个条件和更新文档为基础创建一个新的文档，否则，正常更新。&lt;/p&gt;
+
+&lt;p&gt;比如，记录网站访问次数，通过url查询，如果存在就增加访问次数，否则就新建一个文档&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&amp;gt; db.site.update({&#39;url&#39;: &#39;/blog&#39;}, {&#39;$inc&#39;: {&#39;pageviews&#39;: 1}}, true);
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h3 id=&quot;setoninsert&quot;&gt;$setOnInsert，只在创建时赋值，之后不再更新&lt;/h3&gt;
+
+&lt;p&gt;比如创建时间这个字段，只需要创建的时候赋值，后面无需对其进行修改，就可以使用$setOnInsert&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&amp;gt; db.users.update({}, {&quot;$setOnInsert&quot;: {&quot;createTime&quot;: new Date()}}, true)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h3 id=&quot;save&quot;&gt;save函数&lt;/h3&gt;
+
+&lt;p&gt;save是一个shell函数，如果文档不存在就会创建，否则就更新该文档，它只有一个参数，就是文档。如果该文档有_id键就会执行upsert，否则就会调用insert。&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&amp;gt; var x = db.foo.findOne()
+&amp;gt; x.num = 42
+&amp;gt; db.foo.save(x)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h3 id=&quot;section-15&quot;&gt;更新多个文档&lt;/h3&gt;
+
+&lt;p&gt;update默认只更新第一个匹配的文档，要更新所有匹配到的文档，可以将update的第四个参数设置为true，只能使用 $set 修改器&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&amp;gt; db.users.update({&#39;birthday&#39;: &#39;10/13/1988&#39;}, {$set: {&#39;gift&#39;: &#39;Happy birthday&#39;}}, false, true)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;要想知道更新了多少个文档，可以运行 getLastError 命令 （返回最后一次操作的相关信息）&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&amp;gt; db.runCommand({getLastError: 1})
+{
+    &quot;err&quot;: 1,
+    &quot;updatedExisting&quot;: true,
+    &quot;n&quot;: 5,
+    &quot;ok&quot;: true
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;n:5 说明更新了5条，updatedExisting:true 说明是对已有文档进行更新&lt;/p&gt;
+
+&lt;h3 id=&quot;section-16&quot;&gt;返回被更新的文档&lt;/h3&gt;
+
+</description>
+        <pubDate>Thu, 04 Feb 2016 08:00:16 +0800</pubDate>
+        <link>http://yourdomain.com/mongodb/2016/02/04/mongodb.html</link>
+        <guid isPermaLink="true">http://yourdomain.com/mongodb/2016/02/04/mongodb.html</guid>
+        
+        
+        <category>mongodb</category>
+        
+      </item>
+    
+  </channel>
+</rss>

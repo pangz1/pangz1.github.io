@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>flex 布局入门</title>
+  <meta name="description" content="flex 是 flexible box 的简称, 也就是弹性盒模型， 所以它并不是一个单独的属性，而是一套完整的模型，包含了一整套的属性，其中一些属性是设置在容器（父元素，称之为flex container）上的，其余的属性设置在子元素（flex items）上。">
+
+  <link rel="stylesheet" href="/css/main.css">
+  <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,600,700,800,700italic,600italic,300' rel='stylesheet' type='text/css'>
+  <link rel="canonical" href="http://yourdomain.com/css/2016/02/04/flex.html">
+  <link rel="alternate" type="application/rss+xml" title="胖子" href="http://yourdomain.com/feed.xml">
+</head>
+
+
+  <body>
+
+    <header class="site-header">
+  <hgroup>
+    <a href="/"><h1 class="site-title">胖子</h1></a>
+    <h2>技术改变生活</h2>
+  </hgroup>
+</header>
+
+    <nav>
+  <a href="/">HOME</a>
+  <a href="./blog/">BLOG</a>
+  <a href="./about/">ABOUT ME</a>
+  <a href="/feed.xml" class="rss">RSS</a>
+</nav>
+    
+    <div class="page-content">
+      <div class="wrapper">
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <p class="post-meta"><time datetime="2016-02-04T08:00:16+08:00" itemprop="datePublished">Feb 4, 2016</time></p>
+    <h1 class="post-title" itemprop="name headline">flex 布局入门</h1>
+  </header>
+
+  <div class="post-content" itemprop="articleBody">
+    <p>flex 是 flexible box 的简称, 也就是弹性盒模型， 所以它并不是一个单独的属性，而是一套完整的模型，包含了一整套的属性，其中一些属性是设置在容器（父元素，称之为flex container）上的，其余的属性设置在子元素（flex items）上。</p>
+
+<h3 id="section">基本概念</h3>
+<p>弹性盒模型基于 flex-flow directions 布局，搞一张图便于理解</p>
+
+<p><img src="/assets/images/flex/810695-20150919145658976-1688642409.png" /></p>
+
+<p>flex items 沿着主轴（从main-start到main-end）或者交叉轴（从cross-start到cross-end）排列。</p>
+
+<p>上图所示的 flex-container 中有两根轴，主轴（main axis）和交叉轴（cross axis），主轴从 main start 开始，到 mian end 结束，交叉轴从cross start 开始，到cross end 结束。</p>
+
+<ul>
+  <li>主轴（main axis）——- flex-items沿着flex容器的主轴排列，注意，主轴并不一定是横向的，这取决于 flex-direction 属性的值</li>
+  <li>交叉轴（cross axis）——- 垂直于主轴，方向也取决于 flex-direction 属性的值</li>
+</ul>
+
+<h3 id="flex-container-">flex-container 的属性</h3>
+<p><code class="highlighter-rouge">display</code></p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>/** css **/
+.container {
+  display: flex;   /* or inline-flex */
+  display: -webkit-flex; 
+}
+</code></pre>
+</div>
+
+<p><code class="highlighter-rouge">flex-direction</code></p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>.container{
+  flex-direction: row | row-reverse | column | column-reverse;
+}
+</code></pre>
+</div>
+
+<p><code class="highlighter-rouge">flex-wrap</code></p>
+
+<p>默认情况下，flex-items 会在一行排列，超出父级宽度不会换行<br />
+如果设置为<code class="highlighter-rouge">flex-wrap: wrap</code>，flex-items宽度总和超过父级宽度时会按照下图所示排列</p>
+
+<p><img src="/assets/images/flex/810695-20150919145700398-861125878.png" alt="" /></p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>.container{
+	flex-wrap: nowrap | wrap | wrap-reverse;
+}
+</code></pre>
+</div>
+
+<ul>
+  <li>nowrap(default): 单行从左到右排列</li>
+  <li>wrap ： 多行从左到右排列</li>
+  <li>wrap-reverse：多行从右到左排列</li>
+</ul>
+
+<p>下图分别为wrap和wrap-reverse的情形</p>
+
+<p><img src="/assets/images/flex/810695-20150919145703117-1604069970.png" alt="" /></p>
+
+<p><code class="highlighter-rouge">flex-flow</code></p>
+
+<p>flex-flow 是 flex-direction 和 flex-wrap 的复合形式，默认值是 <code class="highlighter-rouge">row nowrap</code>。</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>.container{
+	flex-flow: &lt;flex-direction&gt; &lt;flex-wrap&gt;;
+}
+</code></pre>
+</div>
+
+<p><code class="highlighter-rouge">justify-content</code></p>
+
+<p><code class="highlighter-rouge">justify-content</code>定义了 flex-items 在主轴上的对齐方式。</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>.container{
+	justify-content: flex-start | flex-end | center | space-between | sapce-around;
+}
+</code></pre>
+</div>
+
+<p><img src="/assets/images/flex/810695-20150920135731617-616558862.jpg" alt="" /></p>
+
+<p>该属性具体的对齐方式与 <code class="highlighter-rouge">flex-direction</code> 的值有关，下面假设 <code class="highlighter-rouge">flex-direction: row;</code> 即主轴方向为从左到右</p>
+
+<ul>
+  <li><code class="highlighter-rouge">flex-direction: flex-start</code> — 左对齐</li>
+  <li><code class="highlighter-rouge">flex-direction: flex-end</code> — 右对齐</li>
+  <li><code class="highlighter-rouge">flex-direction: center</code> — 居中对齐</li>
+  <li><code class="highlighter-rouge">flex-direction: space-between</code> — 两端对齐，items之间的间隔都相等</li>
+  <li><code class="highlighter-rouge">flex-direction: space-around</code> — 每个items两侧的间隔相等</li>
+</ul>
+
+<p><code class="highlighter-rouge">align-items</code></p>
+
+<p>该属性定义 flex-items 在交叉轴上的对齐方式</p>
+
+<p><img src="/assets/images/flex/810695-20150920135959836-2135609919.png" alt="" /></p>
+
+<p><code class="highlighter-rouge">align-content</code></p>
+
+<p>该属性定义 flex-container 中的行在交叉轴上的对齐方式，与 <code class="highlighter-rouge">justify-content</code> 定义单个items在主轴上的对齐方式相似。当 flex-container 只有一行时，该属性不起作用</p>
+
+<p><img src="/assets/images/flex/810695-20150920140122211-895683035.jpg" alt="" /></p>
+
+<p><code class="highlighter-rouge">stretch</code> 是默认值，默认每行拉伸占满容器的剩余空间</p>
+
+<h3 id="flex-items-">flex items 的属性</h3>
+<ul>
+  <li>order: 定义 items 的排列顺序，数值越小，排列越靠前，默认为0</li>
+  <li>flex-grow: 定义项目的放大比例，默认为0，即如果存在剩余空间，也不放大。</li>
+  <li>flex-shrink: 定义了项目的缩小比例，默认为1，即如果空间不足，该项目将缩小。</li>
+  <li>flex-basis: 定义了在分配多余空间之前，项目占据的主轴空间（main size），默认值为auto，负值无效</li>
+  <li>flex: flex属性是flex-grow, flex-shrink 和 flex-basis的简写，默认值为0 1 auto。前两个属性可选。</li>
+  <li>align-self: align-self属性允许单个项目有与其他项目不一样的对齐方式，可覆盖align-items属性。默认值为auto，表示继承父元素的align-items属性，如果没有父元素，则等同于stretch。</li>
+</ul>
+
+<p><code class="highlighter-rouge">flex-grow</code></p>
+
+<p>定义 flex-item 的扩展比例，默认值为 0，如果没有定义该属性，是不会其分配空间的，搞一段代码便于理解：</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>&lt;div class="container"&gt;
+	&lt;div class="item item1"&gt;1&lt;/div&gt;
+	&lt;div class="item item2"&gt;2&lt;/div&gt;
+	&lt;div class="item item3"&gt;3&lt;/div&gt;
+	&lt;div class="item item4"&gt;4&lt;/div&gt;
+&lt;/div&gt;
+
+.container{ display: flex; }
+.item1{ flex-grow: 1; }
+</code></pre>
+</div>
+
+<p>我们只给item1加了 <code class="highlighter-rouge">flex-grow ： 1；</code> 其他item的该属性都是默认值0，不会分配剩余空间，所有的剩余空间都会分配给 item1，结果如下：</p>
+
+<p><img src="/assets/images/flex/810695-20150920151819695-1942916452.png" alt="" /></p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>.item{ margin-right: 10px;}
+.item1{ flex-grow: 1;}
+.item2{ flex-grow: 2;}
+.item3{ flex-grow: 3;}
+.item4{ flex-grow: 4; margin-right: 0;}
+</code></pre>
+</div>
+
+<p>现在富余空间被分成了（1+2+3+4）10份，总宽度是400，
+富余空间宽度为 400 - 10<em>3 – 20</em>4 = 290px，每份是29px。</p>
+
+<ul>
+  <li>item1的宽度为 1*29+20=49px</li>
+  <li>item2的宽度为  2*29+20=78px</li>
+  <li>item3的宽度为 3*29+20=107px</li>
+  <li>item4的宽度为 4*29+20=136px</li>
+</ul>
+
+<p>具体请戳<a href="http://codepen.io/walle2/pen/yYJYgN">这里</a></p>
+
+<p><code class="highlighter-rouge">flex-shrink</code></p>
+
+<p>定义 flex-items 的收缩比例，当 flex-items 的总宽度超出容器宽度时，该比例决定，每个item将收缩多少，具体计算公式为：</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>收缩尺寸 = （总宽 - 容器宽度）* scale；
+</code></pre>
+</div>
+
+<p>scale ： 每个 item 的 flex-shrink 的值占所有 item 的 flex-shrink 的总和的比例, 没有设置该属性的默认值为 1</p>
+
+<p><code class="highlighter-rouge">flex-basis</code></p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>flex-basis ： &lt;length&gt; | &lt;percentage&gt; | auto | content
+</code></pre>
+</div>
+
+<p>指定根据伸缩比率计算出剩余空间的分布之前， flex-items的起始长度，<br />
+在flex组合属性中，如果该值省略，会被默认为0%。<br />
+在flex组合属性中，如果该值被设置为 auto， 则计算值为 自身的 width 值，如果没有指定宽度，则取决于其内容</p>
+
+<p><code class="highlighter-rouge">align-self</code></p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>align-self : auto | flex-start | flex-end | center | baseline | stretch   
+</code></pre>
+</div>
+
+<p><code class="highlighter-rouge">flex</code></p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>flex ： none | [ &lt;flex-grow&gt; &lt;flex-shrink&gt; ? || &lt;flex-basis&gt;]
+</code></pre>
+</div>
+
+<p>符合属性，规定弹性盒模型如何为其子元素分配空间。</p>
+
+<p>默认值为 <code class="highlighter-rouge">0 1 auto</code> ， <code class="highlighter-rouge">flex-grow</code> 和 <code class="highlighter-rouge">flex-shrink</code> 属性是可选的，也就是说可以在 flex 声明中被省略，如果省略了该属性值，则该属性值被设置为 1，相当于以下设置</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>flex-grow: 1;
+flex-shrink: 1;
+</code></pre>
+</div>
+
+<p>一些常见的 flex 属性值：</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>flex : 0 auto / flex : initial
+</code></pre>
+</div>
+
+<p>默认值，相当于 <code class="highlighter-rouge">flex: 0 1 auto;</code> 该值设置 flex-items 的尺寸为其 width / height ，如果 flex-items 的 width 和 height 设置为 auto，则根据他们宽高自适应其内容。</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>flex ： auto
+</code></pre>
+</div>
+
+<p>相当于 <code class="highlighter-rouge">flex: 1 1 auto;</code> 该值允许 设置该值的 item 占据主轴上的所有剩余空间， 如果所有的的item都被设置为 auto， 所有的剩余空间会平均分给每个item。</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>flex ： none
+</code></pre>
+</div>
+
+<p>相当于 <code class="highlighter-rouge">flex: 0 0 auto;</code>和 默认值相似，但是该属性不允许 items shrink，即使在尺寸超出容器的情况下</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>flex ： 任何正数
+</code></pre>
+</div>
+
+<p>相当于 <code class="highlighter-rouge">flex: &lt;正数&gt; 1 0%;</code>  该属性设置 flex-basis 的值为 0， item 会获得指定比例的富余空间.</p>
+
+<h3 id="flex-">flex 的一些实例</h3>
+
+<p>垂直水平居中<a href="http://codepen.io/walle2/pen/Bozoaq">(点击查看)</a></p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>.container{
+	display: flex;
+	align-items: center;   /* 设置交叉轴上的对齐方式 */
+	justify-content: center;  /* 设置主轴上的对齐方式 */
+}
+</code></pre>
+</div>
+
+<p>圣杯布局<a href="http://codepen.io/walle2/pen/KdMdpO">(点击查看)</a></p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>&lt;!-- html --&gt;
+&lt;header&gt;&lt;/header&gt;
+&lt;div class="container"&gt;
+	&lt;section class="main"&gt;&lt;/section&gt;
+	&lt;aside&gt;&lt;/aside&gt;
+&lt;/div&gt;
+&lt;footer&gt;&lt;/footer&gt;
+
+.container{
+	display: flex;
+	align-items: stretch;
+}
+
+section{
+	-webkit-flex: 2 1 500px;
+	-webkit-box-flex: 2;
+	flex: 5 1 500px;
+	margin-right: 1%;
+}
+aside{
+	-webkit-flex: 1 2 250px;
+	-webkit-box-flex: 1;
+	flex: 1 2 250px;
+}
+</code></pre>
+</div>
+
+<p>固定的页脚<a href="http://codepen.io/walle2/pen/Vvjvay">(点击查看)</a>,不用flex实现的戳<a href="http://cbracco.me/css-sticky-footer-effect/">这里</a></p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>&lt;body&gt;
+	&lt;header&gt;&lt;!-- header stuff --&gt;&lt;/header&gt;
+	&lt;section class="content"&gt;&lt;!-- main content --&gt;&lt;/section&gt;
+	&lt;footer&gt;&lt;!-- footer stuff --&gt;&lt;/footer&gt;
+&lt;/body&gt;
+
+html{
+	height: 100%;
+}
+body{
+	display: flex;
+	min-height: 100%;
+	flex-direction: column;
+}
+section.content{
+	flex-grow: 1;
+}
+</code></pre>
+</div>
+
+<h3 id="section-1">兼容老浏览器</h3>
+<p>flex发展至今总共经历了三个版本，分别是  <a href="https://css-tricks.com/old-flexbox-and-new-flexbox/">old, tweener, new</a>， 为了更好实现兼容，最好的方法是，用最新的语法写，然后通过 Autoprefixer 来处理浏览器前缀问题，或者也可以用 sass 封装一个 mixin。</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>.new{
+	display: flex;
+}
+.tweener{
+	display: flexbox;
+}
+.old{
+	display: box;
+}
+</code></pre>
+</div>
+
+<p><img src="/Users/pangzi/pangz1.github.io/assets/images/flex/810695-20150920140141367-2071703170.png" alt="" /></p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>@mixin flexbox() {
+	display: -webkit-box;
+	display: -moz-box;
+	display: -ms-flexbox;
+	display: -webkit-flex;
+	display: flex;
+}
+
+@mixin flex($values) {
+	-webkit-box-flex: $values;
+	-moz-box-flex:  $values;
+	-webkit-flex:  $values;
+	-ms-flex:  $values;
+	flex:  $values;
+}
+
+@mixin order($val) {
+	-webkit-box-ordinal-group: $val;  
+	-moz-box-ordinal-group: $val;     
+	-ms-flex-order: $val;     
+	-webkit-order: $val;  
+	order: $val;
+}
+
+.wrapper {
+	@include flexbox();
+}
+
+.item {
+	@include flex(1 200px);
+	@include order(2);
+}
+</code></pre>
+</div>
+
+<h3 id="section-2">参考资料</h3>
+
+<p><a href="https://css-tricks.com/snippets/css/a-guide-to-flexbox/">A Complete Guide to Flexbox</a><br />
+<a href="http://tympanus.net/codrops/css_reference/flexbox/">Flexbox Codrops CSS Reference</a><br />
+<a href="http://css.doyoe.com/">css在线参考手册</a></p>
+
+  </div>
+
+</article>
+
+      </div>
+    </div>
+
+    <footer class="site-footer">
+  
+  <div class="wrapper">
+    <a href="https://github.com/pangz1" target="_blank"><span class="icon icon--github"><svg viewBox="0 0 16 16"><path fill="#828282" d="M7.999,0.431c-4.285,0-7.76,3.474-7.76,7.761 c0,3.428,2.223,6.337,5.307,7.363c0.388,0.071,0.53-0.168,0.53-0.374c0-0.184-0.007-0.672-0.01-1.32 c-2.159,0.469-2.614-1.04-2.614-1.04c-0.353-0.896-0.862-1.135-0.862-1.135c-0.705-0.481,0.053-0.472,0.053-0.472 c0.779,0.055,1.189,0.8,1.189,0.8c0.692,1.186,1.816,0.843,2.258,0.645c0.071-0.502,0.271-0.843,0.493-1.037 C4.86,11.425,3.049,10.76,3.049,7.786c0-0.847,0.302-1.54,0.799-2.082C3.768,5.507,3.501,4.718,3.924,3.65 c0,0,0.652-0.209,2.134,0.796C6.677,4.273,7.34,4.187,8,4.184c0.659,0.003,1.323,0.089,1.943,0.261 c1.482-1.004,2.132-0.796,2.132-0.796c0.423,1.068,0.157,1.857,0.077,2.054c0.497,0.542,0.798,1.235,0.798,2.082 c0,2.981-1.814,3.637-3.543,3.829c0.279,0.24,0.527,0.713,0.527,1.437c0,1.037-0.01,1.874-0.01,2.129 c0,0.208,0.14,0.449,0.534,0.373c3.081-1.028,5.302-3.935,5.302-7.362C15.76,3.906,12.285,0.431,7.999,0.431z"/></svg>
+</span><span class="username">pangz1</span></a>
+
+  </div>
+
+</footer>
+
+
+  </body>
+
+</html>
