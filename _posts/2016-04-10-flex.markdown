@@ -1,0 +1,296 @@
+---
+layout: post
+title: "flex 布局入门"
+date: 2016-02-04 08:00:16 +800
+categories: css
+---
+flex 是 flexible box 的简称, 也就是弹性盒模型， 所以它并不是一个单独的属性，而是一套完整的模型，包含了一整套的属性，其中一些属性是设置在容器（父元素，称之为flex container）上的，其余的属性设置在子元素（flex items）上。
+
+### 基本概念
+弹性盒模型基于 flex-flow directions 布局，搞一张图便于理解
+
+<img src="/assets/images/flex/810695-20150919145658976-1688642409.png">
+
+flex items 沿着主轴（从main-start到main-end）或者交叉轴（从cross-start到cross-end）排列。
+
+上图所示的 flex-container 中有两根轴，主轴（main axis）和交叉轴（cross axis），主轴从 main start 开始，到 mian end 结束，交叉轴从cross start 开始，到cross end 结束。
+
+* 主轴（main axis）------- flex-items沿着flex容器的主轴排列，注意，主轴并不一定是横向的，这取决于 flex-direction 属性的值
+* 交叉轴（cross axis）------- 垂直于主轴，方向也取决于 flex-direction 属性的值
+
+### flex-container 的属性
+`display`
+
+    /** css **/
+    .container {
+      display: flex;   /* or inline-flex */
+      display: -webkit-flex; 
+    }
+
+`flex-direction`
+
+    .container{
+      flex-direction: row | row-reverse | column | column-reverse;
+    }
+    
+`flex-wrap`
+
+默认情况下，flex-items 会在一行排列，超出父级宽度不会换行<br>
+如果设置为``flex-wrap: wrap``，flex-items宽度总和超过父级宽度时会按照下图所示排列
+
+![](/assets/images/flex/810695-20150919145700398-861125878.png)
+
+    .container{
+			flex-wrap: nowrap | wrap | wrap-reverse;
+    }
+    
+* nowrap(default): 单行从左到右排列
+* wrap ： 多行从左到右排列
+* wrap-reverse：多行从右到左排列
+
+下图分别为wrap和wrap-reverse的情形
+
+![](/assets/images/flex/810695-20150919145703117-1604069970.png)
+
+`flex-flow`
+
+flex-flow 是 flex-direction 和 flex-wrap 的复合形式，默认值是 `row nowrap`。
+    
+    .container{
+			flex-flow: <flex-direction> <flex-wrap>;
+    }
+    
+`justify-content`
+
+`justify-content`定义了 flex-items 在主轴上的对齐方式。
+
+    .container{
+			justify-content: flex-start | flex-end | center | space-between | sapce-around;
+    }
+
+![](/assets/images/flex/810695-20150920135731617-616558862.jpg)
+
+该属性具体的对齐方式与 `flex-direction` 的值有关，下面假设 `flex-direction: row;` 即主轴方向为从左到右
+
+* `flex-direction: flex-start` --- 左对齐
+* `flex-direction: flex-end` --- 右对齐
+* `flex-direction: center` --- 居中对齐
+* `flex-direction: space-between` --- 两端对齐，items之间的间隔都相等
+* `flex-direction: space-around` --- 每个items两侧的间隔相等
+
+`align-items`
+
+该属性定义 flex-items 在交叉轴上的对齐方式
+
+![](	/assets/images/flex/810695-20150920135959836-2135609919.png)
+
+`align-content`
+
+该属性定义 flex-container 中的行在交叉轴上的对齐方式，与 `justify-content` 定义单个items在主轴上的对齐方式相似。当 flex-container 只有一行时，该属性不起作用
+
+![](/assets/images/flex/810695-20150920140122211-895683035.jpg)
+
+`stretch` 是默认值，默认每行拉伸占满容器的剩余空间
+
+###flex items 的属性
+* order: 定义 items 的排列顺序，数值越小，排列越靠前，默认为0
+* flex-grow: 定义项目的放大比例，默认为0，即如果存在剩余空间，也不放大。
+* flex-shrink: 定义了项目的缩小比例，默认为1，即如果空间不足，该项目将缩小。
+* flex-basis: 定义了在分配多余空间之前，项目占据的主轴空间（main size），默认值为auto，负值无效
+* flex: flex属性是flex-grow, flex-shrink 和 flex-basis的简写，默认值为0 1 auto。前两个属性可选。
+* align-self: align-self属性允许单个项目有与其他项目不一样的对齐方式，可覆盖align-items属性。默认值为auto，表示继承父元素的align-items属性，如果没有父元素，则等同于stretch。
+
+`flex-grow`
+
+定义 flex-item 的扩展比例，默认值为 0，如果没有定义该属性，是不会其分配空间的，搞一段代码便于理解：
+		
+		<div class="container">
+				<div class="item item1">1</div>
+				<div class="item item2">2</div>
+				<div class="item item3">3</div>
+				<div class="item item4">4</div>
+		</div>
+		
+		.container{ display: flex; }
+		.item1{ flex-grow: 1; }
+		
+我们只给item1加了 `flex-grow ： 1；` 其他item的该属性都是默认值0，不会分配剩余空间，所有的剩余空间都会分配给 item1，结果如下：
+
+![](/assets/images/flex/810695-20150920151819695-1942916452.png)
+
+		.item{ margin-right: 10px;}
+		.item1{ flex-grow: 1;}
+		.item2{ flex-grow: 2;}
+		.item3{ flex-grow: 3;}
+		.item4{ flex-grow: 4; margin-right: 0;}
+		
+现在富余空间被分成了（1+2+3+4）10份，总宽度是400，
+富余空间宽度为 400 - 10*3 – 20*4 = 290px，每份是29px。
+
+* item1的宽度为 1*29+20=49px
+* item2的宽度为  2*29+20=78px
+* item3的宽度为 3*29+20=107px
+* item4的宽度为 4*29+20=136px
+
+具体请戳[这里](http://codepen.io/walle2/pen/yYJYgN)
+
+`flex-shrink`
+
+定义 flex-items 的收缩比例，当 flex-items 的总宽度超出容器宽度时，该比例决定，每个item将收缩多少，具体计算公式为：
+
+	收缩尺寸 = （总宽 - 容器宽度）* scale；
+
+scale ： 每个 item 的 flex-shrink 的值占所有 item 的 flex-shrink 的总和的比例, 没有设置该属性的默认值为 1
+
+`flex-basis`
+
+	flex-basis ： <length> | <percentage> | auto | content
+	
+指定根据伸缩比率计算出剩余空间的分布之前， flex-items的起始长度，<br>
+在flex组合属性中，如果该值省略，会被默认为0%。<br>
+在flex组合属性中，如果该值被设置为 auto， 则计算值为 自身的 width 值，如果没有指定宽度，则取决于其内容
+
+`align-self`
+
+	align-self : auto | flex-start | flex-end | center | baseline | stretch   
+
+`flex`
+
+	flex ： none | [ <flex-grow> <flex-shrink> ? || <flex-basis>]
+	
+符合属性，规定弹性盒模型如何为其子元素分配空间。
+
+默认值为 `0 1 auto` ， `flex-grow` 和 `flex-shrink` 属性是可选的，也就是说可以在 flex 声明中被省略，如果省略了该属性值，则该属性值被设置为 1，相当于以下设置
+
+	flex-grow: 1;
+	flex-shrink: 1;
+	
+一些常见的 flex 属性值：
+
+	flex : 0 auto / flex : initial
+
+默认值，相当于 `flex: 0 1 auto;` 该值设置 flex-items 的尺寸为其 width / height ，如果 flex-items 的 width 和 height 设置为 auto，则根据他们宽高自适应其内容。
+
+	flex ： auto
+
+相当于 `flex: 1 1 auto;` 该值允许 设置该值的 item 占据主轴上的所有剩余空间， 如果所有的的item都被设置为 auto， 所有的剩余空间会平均分给每个item。
+
+	flex ： none
+
+相当于 `flex: 0 0 auto;`和 默认值相似，但是该属性不允许 items shrink，即使在尺寸超出容器的情况下
+
+	flex ： 任何正数
+
+相当于 `flex: <正数> 1 0%;`  该属性设置 flex-basis 的值为 0， item 会获得指定比例的富余空间.
+
+### flex 的一些实例
+
+垂直水平居中[(点击查看)](http://codepen.io/walle2/pen/Bozoaq)
+
+	.container{
+			display: flex;
+			align-items: center;   /* 设置交叉轴上的对齐方式 */
+			justify-content: center;  /* 设置主轴上的对齐方式 */
+	}
+
+圣杯布局[(点击查看)](http://codepen.io/walle2/pen/KdMdpO)
+
+	<!-- html -->
+	<header></header>
+	<div class="container">
+			<section class="main"></section>
+			<aside></aside>
+	</div>
+	<footer></footer>
+	
+	.container{
+			display: flex;
+			align-items: stretch;
+	}
+
+	section{
+			-webkit-flex: 2 1 500px;
+			-webkit-box-flex: 2;
+			flex: 5 1 500px;
+			margin-right: 1%;
+	}
+	aside{
+			-webkit-flex: 1 2 250px;
+			-webkit-box-flex: 1;
+			flex: 1 2 250px;
+	}
+	
+固定的页脚[(点击查看)](http://codepen.io/walle2/pen/Vvjvay),不用flex实现的戳[这里](http://cbracco.me/css-sticky-footer-effect/)
+
+	<body>
+			<header><!-- header stuff --></header>
+			<section class="content"><!-- main content --></section>
+			<footer><!-- footer stuff --></footer>
+	</body>
+	
+	html{
+    	height: 100%;
+	}
+	body{
+			display: flex;
+			min-height: 100%;
+			flex-direction: column;
+	}
+	section.content{
+			flex-grow: 1;
+	}
+	
+### 兼容老浏览器
+flex发展至今总共经历了三个版本，分别是  [old, tweener, new](https://css-tricks.com/old-flexbox-and-new-flexbox/)， 为了更好实现兼容，最好的方法是，用最新的语法写，然后通过 Autoprefixer 来处理浏览器前缀问题，或者也可以用 sass 封装一个 mixin。
+
+	.new{
+			display: flex;
+	}
+	.tweener{
+			display: flexbox;
+	}
+	.old{
+			display: box;
+	}
+	
+	![](/Users/pangzi/pangz1.github.io/assets/images/flex/810695-20150920140141367-2071703170.png)
+
+		@mixin flexbox() {
+				display: -webkit-box;
+				display: -moz-box;
+				display: -ms-flexbox;
+				display: -webkit-flex;
+				display: flex;
+		}
+
+		@mixin flex($values) {
+				-webkit-box-flex: $values;
+				-moz-box-flex:  $values;
+				-webkit-flex:  $values;
+				-ms-flex:  $values;
+				flex:  $values;
+		}
+
+		@mixin order($val) {
+				-webkit-box-ordinal-group: $val;  
+				-moz-box-ordinal-group: $val;     
+				-ms-flex-order: $val;     
+				-webkit-order: $val;  
+				order: $val;
+		}
+
+		.wrapper {
+				@include flexbox();
+		}
+
+		.item {
+				@include flex(1 200px);
+				@include order(2);
+		}
+	
+
+### 参考资料
+
+[A Complete Guide to Flexbox](https://css-tricks.com/snippets/css/a-guide-to-flexbox/)<br>
+[Flexbox Codrops CSS Reference](http://tympanus.net/codrops/css_reference/flexbox/)<br>
+[css在线参考手册](http://css.doyoe.com/)
