@@ -10,9 +10,6 @@ title: 胖子
 subheading: 技术改变生活
 email: pangzi.fe@gmail.com
 description: > # this means to ignore newlines until "baseurl:"
-  喜欢唱歌，骑行，登山，露营，偶尔做饭<br>
-  以前修自行车的，现在写代码<br>
-  爱生活的好青年，有对象
 baseurl: "" # the subpath of your site, e.g. /blog
 url: "http://yourdomain.com" # the base hostname & protocol for your site
 github_username:  pangz1

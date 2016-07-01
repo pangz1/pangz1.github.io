@@ -132,7 +132,7 @@ flex-flow 是 flex-direction 和 flex-wrap 的复合形式，默认值是 `row n
 * item3的宽度为 3*29+20=107px
 * item4的宽度为 4*29+20=136px
 
-具体请戳[这里](http://codepen.io/walle2/pen/yYJYgN)
+具体请戳[这里](http://codepen.io/walle2/pen/yYJYgN){:target="_blank"}
 
 `flex-shrink`
 
@@ -220,7 +220,7 @@ scale ： 每个 item 的 flex-shrink 的值占所有 item 的 flex-shrink 的�
 		flex: 1 2 250px;
 	}
 	
-固定的页脚[(点击查看)](http://codepen.io/walle2/pen/Vvjvay),不用flex实现的戳[这里](http://cbracco.me/css-sticky-footer-effect/)
+固定的页脚[(点击查看)](http://codepen.io/walle2/pen/Vvjvay){:target="_blank"},不用flex实现的戳[这里](http://cbracco.me/css-sticky-footer-effect/){:target="_blank"}
 
 	<body>
 		<header><!-- header stuff --></header>
@@ -241,7 +241,7 @@ scale ： 每个 item 的 flex-shrink 的值占所有 item 的 flex-shrink 的�
 	}
 	
 ### 兼容老浏览器
-flex发展至今总共经历了三个版本，分别是  [old, tweener, new](https://css-tricks.com/old-flexbox-and-new-flexbox/)， 为了更好实现兼容，最好的方法是，用最新的语法写，然后通过 Autoprefixer 来处理浏览器前缀问题，或者也可以用 sass 封装一个 mixin。
+flex发展至今总共经历了三个版本，分别是  [old, tweener, new](https://css-tricks.com/old-flexbox-and-new-flexbox/){:target="_blank"}， 为了更好实现兼容，最好的方法是，用最新的语法写，然后通过 Autoprefixer 来处理浏览器前缀问题，或者也可以用 sass 封装一个 mixin。
 
 	.new{
 		display: flex;
@@ -253,7 +253,7 @@ flex发展至今总共经历了三个版本，分别是  [old, tweener, new](htt
 		display: box;
 	}
 	
-![](/Users/pangzi/pangz1.github.io/assets/images/flex/810695-20150920140141367-2071703170.png)
+![](/assets/images/flex/810695-20150920140141367-2071703170.png)
 
 	@mixin flexbox() {
 		display: -webkit-box;
@@ -291,6 +291,6 @@ flex发展至今总共经历了三个版本，分别是  [old, tweener, new](htt
 
 ### 参考资料
 
-[A Complete Guide to Flexbox](https://css-tricks.com/snippets/css/a-guide-to-flexbox/)<br>
-[Flexbox Codrops CSS Reference](http://tympanus.net/codrops/css_reference/flexbox/)<br>
-[css在线参考手册](http://css.doyoe.com/)
+[A Complete Guide to Flexbox](https://css-tricks.com/snippets/css/a-guide-to-flexbox/){:target="_blank"}<br>
+[Flexbox Codrops CSS Reference](http://tympanus.net/codrops/css_reference/flexbox/){:target="_blank"}<br>
+[css在线参考手册](http://css.doyoe.com/){:target="_blank"}

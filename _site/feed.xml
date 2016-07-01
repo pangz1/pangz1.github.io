@@ -2,12 +2,11 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>胖子</title>
-    <description>喜欢唱歌，骑行，登山，露营，偶尔做饭&lt;br&gt; 以前修自行车的，现在写代码&lt;br&gt; 爱生活的好青年，有对象
-</description>
+    <description></description>
     <link>http://yourdomain.com/</link>
     <atom:link href="http://yourdomain.com/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sun, 10 Apr 2016 23:22:32 +0800</pubDate>
-    <lastBuildDate>Sun, 10 Apr 2016 23:22:32 +0800</lastBuildDate>
+    <pubDate>Mon, 11 Apr 2016 09:28:31 +0800</pubDate>
+    <lastBuildDate>Mon, 11 Apr 2016 09:28:31 +0800</lastBuildDate>
     <generator>Jekyll v3.1.1</generator>
     
       <item>
@@ -30,7 +29,7 @@ hw.next();
 &lt;/div&gt;
 
 &lt;p&gt;上面的函数有三个&lt;em&gt;状态&lt;/em&gt; : hello, world 和 return 语句
-调用 &lt;code class=&quot;highlighter-rouge&quot;&gt;helloGenerator()&lt;/code&gt; 并不直接执行，也不返回函数运行结果，而是返回一个指向内部状态的&lt;em&gt;指针对象&lt;/em&gt;, 该对象是一个Iterator(遍历器)对象。&lt;/p&gt;
+调用 &lt;code class=&quot;highlighter-rouge&quot;&gt;helloGenerator()&lt;/code&gt; 并不直接执行，也不返回函数运行结果，而是返回一个指向内部状态的&lt;em&gt;指针对象&lt;/em&gt;, 该对象是一个&lt;a href=&quot;/es6/2016/04/10/Iterator.html&quot; target=&quot;_blank&quot;&gt;Iterator(遍历器)&lt;/a&gt;对象。&lt;/p&gt;
 </description>
         <pubDate>Sun, 10 Apr 2016 20:46:16 +0800</pubDate>
         <link>http://yourdomain.com/es6/2016/04/10/generator.html</link>
@@ -133,6 +132,94 @@ for (var value of range(0, 3)){
 &lt;/div&gt;
 
 &lt;p&gt;上面的代码实现部署一个 Iterator 接口，Symbol.iterator 对应一个函数，调用后返回当前对象的遍历器对象。&lt;/p&gt;
+
+&lt;h3 id=&quot;iterator-&quot;&gt;调用Iterator 接口的场合&lt;/h3&gt;
+
+&lt;p&gt;除了使用 &lt;code class=&quot;highlighter-rouge&quot;&gt;for ... of&lt;/code&gt; 循环遍历会调用Iterator 接口，以下几个场合也会默认调用&lt;/p&gt;
+
+&lt;h4 id=&quot;section&quot;&gt;解构赋值&lt;/h4&gt;
+
+&lt;p&gt;对数组和Set解构进行解构赋值的时候，会默认调用Symbol.iterator 方法&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;let set = new Set().add(&#39;a&#39;).add(&#39;b&#39;).add(&#39;c&#39;);
+
+let = [x, y] = set;  // &#39;x&#39; = &#39;a&#39;, &#39;y&#39; = &#39;b&#39;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h4 id=&quot;section-1&quot;&gt;扩展运算符&lt;/h4&gt;
+
+&lt;p&gt;扩展运算符(…) 也会调用默认的 Iterator 接口&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;var str = &#39;hello&#39;;
+[...str]  // [&#39;h&#39;, &#39;e&#39;, &#39;l&#39;, &#39;l&#39;, &#39;o&#39;]
+
+let arr = [&#39;b&#39;, &#39;c&#39;];
+[&#39;a&#39;, [...arr], &#39;d&#39;]  // [&#39;a&#39;, &#39;b&#39;, &#39;c&#39;, &#39;d&#39;]
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;只要某种数据结构部署了Iterator 接口，就可以使用扩展运算符将其转化为数组。 &lt;code class=&quot;highlighter-rouge&quot;&gt;let arr = [...iterator]&lt;/code&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;yield&quot;&gt;yield*&lt;/h3&gt;
+
+&lt;p&gt;yield* 后面跟的是一个可遍历的结构，它会调用该结构的Iterator 接口。&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;let generator = function *(){
+  yield 1;
+  yield* [2, 3, 4];
+  yield 5;
+};
+
+var iterator = generator();
+
+iterator.next()  // {value: 1, done: false}
+iterator.next()  // {value: 2, done: false}
+iterator.next()  // {value: 3, done: false}
+iterator.next()  // {value: 4, done: false}
+iterator.next()  // {value: 5, done: false}
+iterator.next()  // {value: undefined, done: true}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h4 id=&quot;section-2&quot;&gt;其他场合&lt;/h4&gt;
+
+&lt;p&gt;数组遍历会调用Iterator 接口，所以任何接受数组作为参数的场合都会调用Iterator接口&lt;/p&gt;
+
+&lt;h3 id=&quot;iterator--generator-&quot;&gt;Iterator 接口与 Generator 函数&lt;/h3&gt;
+
+&lt;p&gt;用 Generator 函数实现 Symbol.iterator 方法&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;var iterator = {};
+
+iterator[Symbol.iterator] = function *(){
+  yield 1;
+  yield 2;
+  yield 3;
+};
+
+[...iterator]; // [1, 2, 3]
+
+// 下面的写法更加简单
+
+var obj = {
+  * [Symbol.iterator] () {
+    yield &#39;hello&#39;;
+    yield &#39;world&#39;;
+  }
+};
+
+for(let x of obj){
+  console.log(x);
+}
+// x
+// y
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;用Generator 函数 yield 语句给出每一步的返回值&lt;/p&gt;
+
+&lt;h3 id=&quot;section-3&quot;&gt;完了&lt;/h3&gt;
 
 </description>
         <pubDate>Sun, 10 Apr 2016 20:46:16 +0800</pubDate>
@@ -298,7 +385,7 @@ for (var value of range(0, 3)){
   &lt;li&gt;item4的宽度为 4*29+20=136px&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;p&gt;具体请戳&lt;a href=&quot;http://codepen.io/walle2/pen/yYJYgN&quot;&gt;这里&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;具体请戳&lt;a href=&quot;http://codepen.io/walle2/pen/yYJYgN&quot; target=&quot;_blank&quot;&gt;这里&lt;/a&gt;&lt;/p&gt;
 
 &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;flex-shrink&lt;/code&gt;&lt;/p&gt;
 
@@ -408,7 +495,7 @@ aside{
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
 
-&lt;p&gt;固定的页脚&lt;a href=&quot;http://codepen.io/walle2/pen/Vvjvay&quot;&gt;(点击查看)&lt;/a&gt;,不用flex实现的戳&lt;a href=&quot;http://cbracco.me/css-sticky-footer-effect/&quot;&gt;这里&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;固定的页脚&lt;a href=&quot;http://codepen.io/walle2/pen/Vvjvay&quot; target=&quot;_blank&quot;&gt;(点击查看)&lt;/a&gt;,不用flex实现的戳&lt;a href=&quot;http://cbracco.me/css-sticky-footer-effect/&quot; target=&quot;_blank&quot;&gt;这里&lt;/a&gt;&lt;/p&gt;
 
 &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&amp;lt;body&amp;gt;
 	&amp;lt;header&amp;gt;&amp;lt;!-- header stuff --&amp;gt;&amp;lt;/header&amp;gt;
@@ -431,7 +518,7 @@ section.content{
 &lt;/div&gt;
 
 &lt;h3 id=&quot;section-1&quot;&gt;兼容老浏览器&lt;/h3&gt;
-&lt;p&gt;flex发展至今总共经历了三个版本，分别是  &lt;a href=&quot;https://css-tricks.com/old-flexbox-and-new-flexbox/&quot;&gt;old, tweener, new&lt;/a&gt;， 为了更好实现兼容，最好的方法是，用最新的语法写，然后通过 Autoprefixer 来处理浏览器前缀问题，或者也可以用 sass 封装一个 mixin。&lt;/p&gt;
+&lt;p&gt;flex发展至今总共经历了三个版本，分别是  &lt;a href=&quot;https://css-tricks.com/old-flexbox-and-new-flexbox/&quot; target=&quot;_blank&quot;&gt;old, tweener, new&lt;/a&gt;， 为了更好实现兼容，最好的方法是，用最新的语法写，然后通过 Autoprefixer 来处理浏览器前缀问题，或者也可以用 sass 封装一个 mixin。&lt;/p&gt;
 
 &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;.new{
 	display: flex;
@@ -445,7 +532,7 @@ section.content{
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
 
-&lt;p&gt;&lt;img src=&quot;/Users/pangzi/pangz1.github.io/assets/images/flex/810695-20150920140141367-2071703170.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/assets/images/flex/810695-20150920140141367-2071703170.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 
 &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;@mixin flexbox() {
 	display: -webkit-box;
@@ -484,9 +571,9 @@ section.content{
 
 &lt;h3 id=&quot;section-2&quot;&gt;参考资料&lt;/h3&gt;
 
-&lt;p&gt;&lt;a href=&quot;https://css-tricks.com/snippets/css/a-guide-to-flexbox/&quot;&gt;A Complete Guide to Flexbox&lt;/a&gt;&lt;br /&gt;
-&lt;a href=&quot;http://tympanus.net/codrops/css_reference/flexbox/&quot;&gt;Flexbox Codrops CSS Reference&lt;/a&gt;&lt;br /&gt;
-&lt;a href=&quot;http://css.doyoe.com/&quot;&gt;css在线参考手册&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;https://css-tricks.com/snippets/css/a-guide-to-flexbox/&quot; target=&quot;_blank&quot;&gt;A Complete Guide to Flexbox&lt;/a&gt;&lt;br /&gt;
+&lt;a href=&quot;http://tympanus.net/codrops/css_reference/flexbox/&quot; target=&quot;_blank&quot;&gt;Flexbox Codrops CSS Reference&lt;/a&gt;&lt;br /&gt;
+&lt;a href=&quot;http://css.doyoe.com/&quot; target=&quot;_blank&quot;&gt;css在线参考手册&lt;/a&gt;&lt;/p&gt;
 </description>
         <pubDate>Thu, 04 Feb 2016 08:00:16 +0800</pubDate>
         <link>http://yourdomain.com/css/2016/02/04/flex.html</link>

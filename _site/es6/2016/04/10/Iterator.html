@@ -27,7 +27,6 @@
 
     <nav>
   <a href="/">HOME</a>
-  <a href="./blog/">BLOG</a>
   <a href="./about/">ABOUT ME</a>
   <a href="/feed.xml" class="rss">RSS</a>
 </nav>
@@ -132,6 +131,94 @@ for (var value of range(0, 3)){
 </div>
 
 <p>上面的代码实现部署一个 Iterator 接口，Symbol.iterator 对应一个函数，调用后返回当前对象的遍历器对象。</p>
+
+<h3 id="iterator-">调用Iterator 接口的场合</h3>
+
+<p>除了使用 <code class="highlighter-rouge">for ... of</code> 循环遍历会调用Iterator 接口，以下几个场合也会默认调用</p>
+
+<h4 id="section">解构赋值</h4>
+
+<p>对数组和Set解构进行解构赋值的时候，会默认调用Symbol.iterator 方法</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>let set = new Set().add('a').add('b').add('c');
+
+let = [x, y] = set;  // 'x' = 'a', 'y' = 'b'
+</code></pre>
+</div>
+
+<h4 id="section-1">扩展运算符</h4>
+
+<p>扩展运算符(…) 也会调用默认的 Iterator 接口</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>var str = 'hello';
+[...str]  // ['h', 'e', 'l', 'l', 'o']
+
+let arr = ['b', 'c'];
+['a', [...arr], 'd']  // ['a', 'b', 'c', 'd']
+</code></pre>
+</div>
+
+<p>只要某种数据结构部署了Iterator 接口，就可以使用扩展运算符将其转化为数组。 <code class="highlighter-rouge">let arr = [...iterator]</code></p>
+
+<h3 id="yield">yield*</h3>
+
+<p>yield* 后面跟的是一个可遍历的结构，它会调用该结构的Iterator 接口。</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>let generator = function *(){
+  yield 1;
+  yield* [2, 3, 4];
+  yield 5;
+};
+
+var iterator = generator();
+
+iterator.next()  // {value: 1, done: false}
+iterator.next()  // {value: 2, done: false}
+iterator.next()  // {value: 3, done: false}
+iterator.next()  // {value: 4, done: false}
+iterator.next()  // {value: 5, done: false}
+iterator.next()  // {value: undefined, done: true}
+</code></pre>
+</div>
+
+<h4 id="section-2">其他场合</h4>
+
+<p>数组遍历会调用Iterator 接口，所以任何接受数组作为参数的场合都会调用Iterator接口</p>
+
+<h3 id="iterator--generator-">Iterator 接口与 Generator 函数</h3>
+
+<p>用 Generator 函数实现 Symbol.iterator 方法</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>var iterator = {};
+
+iterator[Symbol.iterator] = function *(){
+  yield 1;
+  yield 2;
+  yield 3;
+};
+
+[...iterator]; // [1, 2, 3]
+
+// 下面的写法更加简单
+
+var obj = {
+  * [Symbol.iterator] () {
+    yield 'hello';
+    yield 'world';
+  }
+};
+
+for(let x of obj){
+  console.log(x);
+}
+// x
+// y
+</code></pre>
+</div>
+
+<p>用Generator 函数 yield 语句给出每一步的返回值</p>
+
+<h3 id="section-3">完了</h3>
 
 
   </div>

@@ -20,4 +20,4 @@ Generator 函数从语法上可以理解成一个状态机，封装了很多内�
     hw.next();
 
 上面的函数有三个*状态* : hello, world 和 return 语句
-调用 `helloGenerator()` 并不直接执行，也不返回函数运行结果，而是返回一个指向内部状态的*指针对象*, 该对象是一个Iterator(遍历器)对象。
+调用 `helloGenerator()` 并不直接执行，也不返回函数运行结果，而是返回一个指向内部状态的*指针对象*, 该对象是一个[Iterator(遍历器)]({% post_url 2016-04-10-Iterator %}){:target="_blank"}对象。
