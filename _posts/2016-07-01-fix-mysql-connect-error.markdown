@@ -2,7 +2,7 @@
 layout: post
 title: "解决mysql can't connect to local mysql server through socket '/tmp/mysql.sock' (2) 的问题"
 date: 2016-02-04 08:00:16 +800
-categories: mongodb
+categories: mysql
 ---
 
 今天使用homebrew 安装mysql，安装之后一直报错

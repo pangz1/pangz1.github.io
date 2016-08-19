@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>了解powershell</title>
+  <meta name="description" content="随着 powershell 开源，mac上也可以跑了，今天安装了准备体验一把">
+
+  <link rel="stylesheet" href="/css/main.css">
+  <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,600,700,800,700italic,600italic,300' rel='stylesheet' type='text/css'>
+  <link rel="canonical" href="http://yourdomain.com/shell/2016/08/19/powershell.html">
+  <link rel="alternate" type="application/rss+xml" title="胖子" href="http://yourdomain.com/feed.xml">
+</head>
+
+
+  <body>
+
+    <header class="site-header">
+  <hgroup>
+    <a href="/"><h1 class="site-title">胖子</h1></a>
+    <h2>技术改变生活</h2>
+  </hgroup>
+</header>
+
+    <nav>
+  <a href="/">HOME</a>
+  <a href="./about/">ABOUT ME</a>
+  <a href="/feed.xml" class="rss">RSS</a>
+</nav>
+    
+    <div class="page-content">
+      <div class="wrapper">
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <p class="post-meta"><time datetime="2016-08-19T23:06:16+08:00" itemprop="datePublished">Aug 19, 2016</time></p>
+    <h1 class="post-title" itemprop="name headline">了解powershell</h1>
+  </header>
+
+  <div class="post-content" itemprop="articleBody">
+    <p>随着 powershell 开源，mac上也可以跑了，今天安装了准备体验一把</p>
+
+<h3 id="section">安装</h3>
+
+<p>首先在这个<a href="https://github.com/PowerShell/PowerShell/blob/master/docs/installation/linux.md#os-x-1011">地址</a>
+安装mac版本的 powershell</p>
+
+<p>安装之后，打开命令行输入</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>powershell
+</code></pre>
+</div>
+
+<p>如果安装成的话会有如下显示：</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>PS /User/pangzi&gt;
+</code></pre>
+</div>
+
+<h3 id="section-1">简单的命令-查看进程</h3>
+
+<p>输入一个命令显示所有的进程：</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>PS /User/pangzi&gt; Get-Process
+</code></pre>
+</div>
+
+<p>只显示想要查看的进程：</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>PS /User/pangzi&gt; Get-Process -Name qq
+</code></pre>
+</div>
+
+<p><img src="/assets/images/powershell/A2DEE357-705D-40C4-A10B-3F1115879CC2.png" /></p>
+
+<p>想要查看更多进程，只需要用逗号”,”分隔:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>PS /User/pangzi&gt; Get-Process -Name qq, powershell
+</code></pre>
+</div>
+
+<p><img src="/assets/images/powershell/DE0EE0CA-BFF9-4F3F-B1DB-89D980BE1F34.png" /></p>
+
+<h3 id="section-2">简单命令-获取别名</h3>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>PS /User/pangzi&gt; Get-Alias
+</code></pre>
+</div>
+
+<p>该命令会获取一长串别名列表，比如:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>gal   Get-Alias
+cd    Set-Location   设置工作目录为指定路径
+dir   Get-ChildItem  列出指定目录下的items
+ni    New-Item       创建item(文件)
+sc    Set-Content    设置内容
+type  Get-Content    获取内容
+</code></pre>
+</div>
+
+<h3 id="section-3">简单命令-操作文件</h3>
+<p>下面具体看看上面几个命令：</p>
+
+<p>列出当前目录及其子目录下的所有文件</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>PS /User/pangzi&gt; cd $home
+PS /home&gt; dir -Recurse
+</code></pre>
+</div>
+
+<p>列出所有的文本文件</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>PS /home&gt; dir -Path *.txt -Recurse
+</code></pre>
+</div>
+
+<p>创建一个空的文本文件</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>PS /User/pangzi&gt; ni ./test.txt
+</code></pre>
+</div>
+
+<p>也可以像下面这样写</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>PS /User/pangzi&gt; "" &gt; ./test.txt
+</code></pre>
+</div>
+
+<p>可以使用 -Value 来添加内容到文件中，如果文件已经存在，使用 -Force 来覆盖之前的内容</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>PS /User/pangzi&gt; ni ./test.txt -Value "Hello powershell!" -Force
+# or
+# #号后面的内容是注释
+PS /User/pangzi&gt; sc -Path ./test.txt -Value "Hello powershell again"
+</code></pre>
+</div>
+
+<p>或者</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>PS /User/pangzi&gt; "hello powershell" &gt; test.txt
+</code></pre>
+</div>
+
+<p>type - Get-Item 获取 item 的内容</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>PS /User/pangzi&gt; type -Path ./test.txt
+</code></pre>
+</div>
+
+<p>del - Remove-Item</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>PS /User/pangzi&gt; del -Path ./test.txt
+</code></pre>
+</div>
+
+<p>$PSVersionTable 查看 powershell 的版本</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>PS /User/pangzi&gt; $PSVersionTable
+</code></pre>
+</div>
+
+<p>exit - 退出</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>PS /User/pangzi&gt; exit
+</code></pre>
+</div>
+
+<p>Get-Help 获取帮助</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>PS /User/pangzi&gt; Get-Help -Name Get-Process
+# demo
+PS /User/pangzi&gt; Get-Help -Name Get-Process -Examples
+</code></pre>
+</div>
+
+<h3 id="section-4">管道</h3>
+
+<p>dir 然后 按照大小排序</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>PS /User/pangzi&gt; dir | sort-object -property length -descending
+</code></pre>
+</div>
+
+<p>dir 获取最大的文件
+    # select is short for select-object
+    PS /User/pangzi&gt; dir | sort-object -property length -descending | select-object -first 1</p>
+
+<h3 id="powershell-">创建 powershell 脚本</h3>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>创建 .ps1 的文件
+</code></pre>
+</div>
+
+<p><a href="https://github.com/PowerShell/PowerShell/blob/master/docs/learning-powershell/powershell-beginners-guide.md">本文参考</a></p>
+
+
+  </div>
+
+</article>
+
+      </div>
+    </div>
+
+    <footer class="site-footer">
+  
+  <div class="wrapper">
+    <a href="https://github.com/pangz1" target="_blank"><span class="icon icon--github"><svg viewBox="0 0 16 16"><path fill="#828282" d="M7.999,0.431c-4.285,0-7.76,3.474-7.76,7.761 c0,3.428,2.223,6.337,5.307,7.363c0.388,0.071,0.53-0.168,0.53-0.374c0-0.184-0.007-0.672-0.01-1.32 c-2.159,0.469-2.614-1.04-2.614-1.04c-0.353-0.896-0.862-1.135-0.862-1.135c-0.705-0.481,0.053-0.472,0.053-0.472 c0.779,0.055,1.189,0.8,1.189,0.8c0.692,1.186,1.816,0.843,2.258,0.645c0.071-0.502,0.271-0.843,0.493-1.037 C4.86,11.425,3.049,10.76,3.049,7.786c0-0.847,0.302-1.54,0.799-2.082C3.768,5.507,3.501,4.718,3.924,3.65 c0,0,0.652-0.209,2.134,0.796C6.677,4.273,7.34,4.187,8,4.184c0.659,0.003,1.323,0.089,1.943,0.261 c1.482-1.004,2.132-0.796,2.132-0.796c0.423,1.068,0.157,1.857,0.077,2.054c0.497,0.542,0.798,1.235,0.798,2.082 c0,2.981-1.814,3.637-3.543,3.829c0.279,0.24,0.527,0.713,0.527,1.437c0,1.037-0.01,1.874-0.01,2.129 c0,0.208,0.14,0.449,0.534,0.373c3.081-1.028,5.302-3.935,5.302-7.362C15.76,3.906,12.285,0.431,7.999,0.431z"/></svg>
+</span><span class="username">pangz1</span></a>
+
+  </div>
+
+</footer>
+
+
+  </body>
+
+</html>

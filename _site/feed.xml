@@ -5,9 +5,303 @@
     <description></description>
     <link>http://yourdomain.com/</link>
     <atom:link href="http://yourdomain.com/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Mon, 11 Apr 2016 09:28:31 +0800</pubDate>
-    <lastBuildDate>Mon, 11 Apr 2016 09:28:31 +0800</lastBuildDate>
+    <pubDate>Sat, 20 Aug 2016 00:32:37 +0800</pubDate>
+    <lastBuildDate>Sat, 20 Aug 2016 00:32:37 +0800</lastBuildDate>
     <generator>Jekyll v3.1.1</generator>
+    
+      <item>
+        <title>了解powershell</title>
+        <description>&lt;p&gt;随着 powershell 开源，mac上也可以跑了，今天安装了准备体验一把&lt;/p&gt;
+
+&lt;h3 id=&quot;section&quot;&gt;安装&lt;/h3&gt;
+
+&lt;p&gt;首先在这个&lt;a href=&quot;https://github.com/PowerShell/PowerShell/blob/master/docs/installation/linux.md#os-x-1011&quot;&gt;地址&lt;/a&gt;
+安装mac版本的 powershell&lt;/p&gt;
+
+&lt;p&gt;安装之后，打开命令行输入&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;powershell
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;如果安装成的话会有如下显示：&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;PS /User/pangzi&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h3 id=&quot;section-1&quot;&gt;简单的命令-查看进程&lt;/h3&gt;
+
+&lt;p&gt;输入一个命令显示所有的进程：&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;PS /User/pangzi&amp;gt; Get-Process
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;只显示想要查看的进程：&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;PS /User/pangzi&amp;gt; Get-Process -Name qq
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/powershell/A2DEE357-705D-40C4-A10B-3F1115879CC2.png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;想要查看更多进程，只需要用逗号”,”分隔:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;PS /User/pangzi&amp;gt; Get-Process -Name qq, powershell
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/powershell/DE0EE0CA-BFF9-4F3F-B1DB-89D980BE1F34.png&quot; /&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;section-2&quot;&gt;简单命令-获取别名&lt;/h3&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;PS /User/pangzi&amp;gt; Get-Alias
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;该命令会获取一长串别名列表，比如:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;gal   Get-Alias
+cd    Set-Location   设置工作目录为指定路径
+dir   Get-ChildItem  列出指定目录下的items
+ni    New-Item       创建item(文件)
+sc    Set-Content    设置内容
+type  Get-Content    获取内容
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h3 id=&quot;section-3&quot;&gt;简单命令-操作文件&lt;/h3&gt;
+&lt;p&gt;下面具体看看上面几个命令：&lt;/p&gt;
+
+&lt;p&gt;列出当前目录及其子目录下的所有文件&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;PS /User/pangzi&amp;gt; cd $home
+PS /home&amp;gt; dir -Recurse
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;列出所有的文本文件&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;PS /home&amp;gt; dir -Path *.txt -Recurse
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;创建一个空的文本文件&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;PS /User/pangzi&amp;gt; ni ./test.txt
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;也可以像下面这样写&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;PS /User/pangzi&amp;gt; &quot;&quot; &amp;gt; ./test.txt
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;可以使用 -Value 来添加内容到文件中，如果文件已经存在，使用 -Force 来覆盖之前的内容&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;PS /User/pangzi&amp;gt; ni ./test.txt -Value &quot;Hello powershell!&quot; -Force
+# or
+# #号后面的内容是注释
+PS /User/pangzi&amp;gt; sc -Path ./test.txt -Value &quot;Hello powershell again&quot;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;或者&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;PS /User/pangzi&amp;gt; &quot;hello powershell&quot; &amp;gt; test.txt
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;type - Get-Item 获取 item 的内容&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;PS /User/pangzi&amp;gt; type -Path ./test.txt
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;del - Remove-Item&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;PS /User/pangzi&amp;gt; del -Path ./test.txt
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;$PSVersionTable 查看 powershell 的版本&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;PS /User/pangzi&amp;gt; $PSVersionTable
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;exit - 退出&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;PS /User/pangzi&amp;gt; exit
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Get-Help 获取帮助&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;PS /User/pangzi&amp;gt; Get-Help -Name Get-Process
+# demo
+PS /User/pangzi&amp;gt; Get-Help -Name Get-Process -Examples
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h3 id=&quot;section-4&quot;&gt;管道&lt;/h3&gt;
+
+&lt;p&gt;dir 然后 按照大小排序&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;PS /User/pangzi&amp;gt; dir | sort-object -property length -descending
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;dir 获取最大的文件
+    # select is short for select-object
+    PS /User/pangzi&amp;gt; dir | sort-object -property length -descending | select-object -first 1&lt;/p&gt;
+
+&lt;h3 id=&quot;powershell-&quot;&gt;创建 powershell 脚本&lt;/h3&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;创建 .ps1 的文件
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://github.com/PowerShell/PowerShell/blob/master/docs/learning-powershell/powershell-beginners-guide.md&quot;&gt;本文参考&lt;/a&gt;&lt;/p&gt;
+
+</description>
+        <pubDate>Fri, 19 Aug 2016 23:06:16 +0800</pubDate>
+        <link>http://yourdomain.com/shell/2016/08/19/powershell.html</link>
+        <guid isPermaLink="true">http://yourdomain.com/shell/2016/08/19/powershell.html</guid>
+        
+        
+        <category>shell</category>
+        
+      </item>
+    
+      <item>
+        <title>nodejs 中的 process 对象</title>
+        <description>&lt;p&gt;nodejs 提供了为数不多的几个全局变量, 其中最为重要的就是 &lt;code class=&quot;highlighter-rouge&quot;&gt;process&lt;/code&gt; 对象了, 下面一起来了解一下 &lt;code class=&quot;highlighter-rouge&quot;&gt;process&lt;/code&gt; 对象&lt;/p&gt;
+
+&lt;h2 id=&quot;process&quot;&gt;process&lt;/h2&gt;
+
+&lt;p&gt;首先看一下它的一些属性和方法&lt;/p&gt;
+
+&lt;h3 id=&quot;processversion&quot;&gt;process.version&lt;/h3&gt;
+
+&lt;p&gt;node 版本字符串, 例如 ‘v0.1.103’.&lt;/p&gt;
+
+&lt;h3 id=&quot;processexecpath&quot;&gt;process.execPath&lt;/h3&gt;
+
+&lt;p&gt;执行 node 的目录&lt;/p&gt;
+
+&lt;h3 id=&quot;processpid&quot;&gt;process.pid&lt;/h3&gt;
+
+&lt;p&gt;process id&lt;/p&gt;
+
+&lt;h3 id=&quot;processcwd&quot;&gt;process.cwd()&lt;/h3&gt;
+
+&lt;p&gt;返回当前的工作目录, 例如：&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ cd ~
+$ node
+$ process.cwd()
+  &quot;/Users/pangzi&quot;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h3 id=&quot;processchdirpath&quot;&gt;process.chdir(path)&lt;/h3&gt;
+
+&lt;p&gt;改变当前的工作目录到指定的目录&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ process.chdir(&#39;/foo&#39;);
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h3 id=&quot;processenv&quot;&gt;process.env&lt;/h3&gt;
+
+&lt;p&gt;包含用户环境变量的对象, 例如&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ process.env
+{ PATH: &#39;/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin&#39;,
+TERM: &#39;xterm-256color&#39;,
+HOME: &#39;/Users/pangzi&#39;,
+...
+_: &#39;/usr/local/bin/node&#39; }
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h3 id=&quot;processargv&quot;&gt;process.argv&lt;/h3&gt;
+
+&lt;p&gt;使用&lt;code class=&quot;highlighter-rouge&quot;&gt;node&lt;/code&gt;执行一个文件, 跟在文件后面所有的值都作为参数&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ node foo.js foo bar baz
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;在foo.js中我们使用 &lt;code class=&quot;highlighter-rouge&quot;&gt;console.dir(process.argv)&lt;/code&gt; 打印结果如下:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;[ &#39;/usr/local/Cellar/node5/5.12.0/bin/node&#39;,
+&#39;/Users/pangzi/app/pangz1.github.io/foo.js&#39;,
+&#39;foo&#39;,
+&#39;bar&#39;,
+&#39;baz&#39; ]
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h3 id=&quot;processexit&quot;&gt;process.exit()&lt;/h3&gt;
+
+&lt;h3 id=&quot;processon&quot;&gt;process.on()&lt;/h3&gt;
+
+&lt;p&gt;process 本身是一个 &lt;code class=&quot;highlighter-rouge&quot;&gt;EventEmitter&lt;/code&gt;, 我们可以通过 监听&lt;code class=&quot;highlighter-rouge&quot;&gt;uncaughtException&lt;/code&gt;事件来捕获异常&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;process.on(&#39;uncaughtException&#39;, function (err) {
+    console.log(&#39;got an error: %s&#39;, err.message);
+    process.exit(1);
+})
+
+setTimeout(function () {
+    throw new Error(&#39;fail&#39;)
+}, 100)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h3 id=&quot;processkill&quot;&gt;process.kill()&lt;/h3&gt;
+
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;process.kill()&lt;/code&gt;方法发送一个信号至给定的进程(pid), 默认是发送 SIGINT 信号&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;process.on(&#39;SIGTERM&#39;, function () {
+    console.log(&#39;terminating&#39;);
+    process.exit(1)
+})
+
+setTimeout(function(){
+    console.log(&#39;sending SIGTERM to process %d&#39;, process.pid);
+    process.kill(process.pid, &#39;SIGTERM&#39;);
+}, 500);
+
+setTimeout(function(){
+    console.log(&#39;never called&#39;);
+}, 1000);
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+</description>
+        <pubDate>Mon, 01 Aug 2016 12:06:16 +0800</pubDate>
+        <link>http://yourdomain.com/nodejs/2016/08/01/nodejs-process.html</link>
+        <guid isPermaLink="true">http://yourdomain.com/nodejs/2016/08/01/nodejs-process.html</guid>
+        
+        
+        <category>nodejs</category>
+        
+      </item>
+    
+      <item>
+        <title>Web Rendering</title>
+        <description>
+</description>
+        <pubDate>Tue, 31 May 2016 00:00:00 +0800</pubDate>
+        <link>http://yourdomain.com/2016/05/31/web-rendering.html</link>
+        <guid isPermaLink="true">http://yourdomain.com/2016/05/31/web-rendering.html</guid>
+        
+        
+      </item>
     
       <item>
         <title>Generator 函数</title>
@@ -29,7 +323,20 @@ hw.next();
 &lt;/div&gt;
 
 &lt;p&gt;上面的函数有三个&lt;em&gt;状态&lt;/em&gt; : hello, world 和 return 语句
-调用 &lt;code class=&quot;highlighter-rouge&quot;&gt;helloGenerator()&lt;/code&gt; 并不直接执行，也不返回函数运行结果，而是返回一个指向内部状态的&lt;em&gt;指针对象&lt;/em&gt;, 该对象是一个&lt;a href=&quot;/es6/2016/04/10/Iterator.html&quot; target=&quot;_blank&quot;&gt;Iterator(遍历器)&lt;/a&gt;对象。&lt;/p&gt;
+调用 &lt;code class=&quot;highlighter-rouge&quot;&gt;helloGenerator()&lt;/code&gt; 并不直接执行，也不返回函数运行结果，而是返回一个指向内部状态的&lt;em&gt;指针对象&lt;/em&gt;, 该对象是一个Iterator&lt;a href=&quot;/es6/2016/04/10/Iterator.html&quot; target=&quot;_blank&quot;&gt;Iterator(遍历器)&lt;/a&gt;对象。
+每次调用该Iterator 对象的 next 方法，内部指针就会移到下一个状态，直到遇到下一个 yield。&lt;/p&gt;
+
+&lt;p&gt;yield 语句返回一个对象，该对象包含一个 value 属性和一个 done 属性，value 属性就是 yield 后面的值，done 属性表示遍历是否结束，例如上面的 helloGenerator 会一次返回&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;value:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;&#39;hello&#39;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;done:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;false&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;value:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;&#39;world&#39;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;done:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;false&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;value:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;&#39;ending&#39;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;done:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;true&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;遇到 return 语句表示遍历结束，done 属性为true&lt;/p&gt;
+
+&lt;p&gt;其实准确的说，yield 语句并没有返回值，yield 输出的值是作为 next 函数的返回值， yield 语句返回的是 undefined&lt;/p&gt;
 </description>
         <pubDate>Sun, 10 Apr 2016 20:46:16 +0800</pubDate>
         <link>http://yourdomain.com/es6/2016/04/10/generator.html</link>
@@ -228,6 +535,35 @@ for(let x of obj){
         
         
         <category>es6</category>
+        
+      </item>
+    
+      <item>
+        <title>解决mysql can&#39;t connect to local mysql server through socket &#39;/tmp/mysql.sock&#39; (2) 的问题</title>
+        <description>&lt;p&gt;今天使用homebrew 安装mysql，安装之后一直报错&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;can&#39;t connect to local mysql server through socket &#39;/tmp/mysql.sock&#39; (2)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;无法连接，试了n种网上找的方法，都失败了&lt;/p&gt;
+
+&lt;p&gt;最后在&lt;a href=&quot;http://stackoverflow.com/questions/22436028/cant-connect-to-local-mysql-server-through-socket-tmp-mysql-sock-2&quot;&gt;这里&lt;/a&gt;找到了解决方案&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;ln -s /Applications/MAMP/tmp/mysql/mysql.sock /tmp/mysql.sock
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;顺便了解了下 ln 这个命令&lt;/p&gt;
+
+&lt;p&gt;ln是linux中又一个非常重要命令，它的功能是为某一个文件在另外一个位置建立一个同不的链接，这个命令最常用的参数是 -s , 具体用法是: ln -s 源文件 目标文件&lt;/p&gt;
+</description>
+        <pubDate>Thu, 04 Feb 2016 08:00:16 +0800</pubDate>
+        <link>http://yourdomain.com/mysql/2016/02/04/fix-mysql-connect-error.html</link>
+        <guid isPermaLink="true">http://yourdomain.com/mysql/2016/02/04/fix-mysql-connect-error.html</guid>
+        
+        
+        <category>mysql</category>
         
       </item>
     

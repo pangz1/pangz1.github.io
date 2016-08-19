@@ -150,6 +150,8 @@ body > * {
     color: green; }
   .post-content p {
     margin-bottom: 1em; }
+  .post-content h2 {
+    margin-bottom: .8em; }
   .post-content h3 {
     color: #080;
     margin: .8em 0;
